@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--开启注解扫描-->
+    <context:component-scan base-package="com.yctu.student">
+        <!--配置要忽略的注解-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
+    </context:component-scan>
+
+
+    <!--c3p0连接池-->
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="DriverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://101.133.219.224:3306/db_student_manage?characterEncoding=utf-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Quliqing@666"/>
+    </bean>
+    <!-- 配置SqlSession的工厂 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- 配置扫描dao的包,告诉spring生成哪些接口的代理对象，存到spring容器当中 -->
+    <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.yctu.student.dao"/>
+    </bean>
+
+    <!-- 1、配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--  2、配置事务的通知
+                此时我们需要导入事务的约束 tx名称空间和约束，同时也需要aop的
+                使用tx:advice标签配置事务通知
+                    属性：
+                        id：给事务通知起一个唯一标识
+                        transaction-manager：给事务通知提供一个事务管理器引用-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- 5、配置事务的属性，是在事务的通知tx:advice标签的内部
+                isolation：用于指定事务的隔离级别。默认值是DEFAULT，表示使用数据库的默认隔离级别。
+                propagation：用于指定事务的传播行为。默认值是REQUIRED，表示一定会有事务，增删改的选择。查询方法可以选择SUPPORTS，提交。
+                    REQUIRED:如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中。一般的选择（默认值）
+                    SUPPORTS:支持当前事务，如果当前没有事务，就以非事务方式执行（没有事务）
+                read-only：用于指定事务是否只读。只有查询方法才能设置为true。默认值是false，表示读写。
+                timeout：用于指定事务的超时时间，默认值是-1，表示永不超时。如果指定了数值，以秒为单位。
+                rollback-for：用于指定一个异常，当产生该异常时，事务回滚，产生其他异常时，事务不回滚。没有默认值。表示任何异常都回滚。
+                no-rollback-for：用于指定一个异常，当产生该异常时，事务不回滚，产生其他异常时事务回滚。没有默认值。表示任何异常都回滚。
+        -->
+        <tx:attributes>
+            <!--所有方法采用默认事务，读写-->
+            <tx:method name="*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"></tx:method>
+        </tx:attributes>
+    </tx:advice>
+    <!-- 3、配置AOP中的通用切入点表达式-->
+    <aop:config>
+        <!-- 配置切入点表达式-->
+        <aop:pointcut id="pt1" expression="execution(* com.user.service.impl.*.*(..))"></aop:pointcut>
+        <!--4、建立事务通知和切入点表达式的对应关系 -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pt1"></aop:advisor>
+    </aop:config>
+
+
+</beans>
