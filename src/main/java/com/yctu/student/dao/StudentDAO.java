@@ -164,5 +164,33 @@ public interface StudentDAO {
      */
     @Delete("DELETE FROM tb_student WHERE id=#{id}")
     void deleteStudentById(Long id);
+
+    /**
+     * 通过账号和密码进行登录
+     * @param number
+     * @param password
+     * @return
+     */
+    @ResultMap(value = "studentMap")
+    @Select("SELECT * FROM tb_student WHERE number=#{number} AND password=#{password}")
+    StudentDO getStudentByNumberAndPassword(@Param("number") int number, @Param("password") String password);
+
+
+    /**
+     * 根据条件查询学生
+     * @param studentDO
+     * @return
+     */
+    @ResultMap(value = "studentMap")
+    @Select({"<script>"
+        + "SELECT * FROM tb_student "
+        + "WHERE 1=1 "
+        + "<when test='college!=null'> AND college=#{college} </when>"
+        + "<when test='major!=null'> AND major=#{major} </when>"
+        + "<when test='classroom!=null'> AND classroom=#{classroom} </when>"
+        + "<when test='entry_time!=null'> AND entry_time=#{entryTime} </when>"
+        + "<when test='sex!=null'> AND sex=#{sex} </when>"
+        + "</script>"})
+    List<StudentDO> searchStudents(StudentDO studentDO);
 }
 

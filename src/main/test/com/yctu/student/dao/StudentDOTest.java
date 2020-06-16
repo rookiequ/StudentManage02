@@ -2,6 +2,7 @@ package com.yctu.student.dao;
 
 import com.yctu.student.dao.StudentDAO;
 import com.yctu.student.domain.StudentDO;
+import com.yctu.student.utils.SHA256Util;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class StudentDOTest {
         StudentDO studentDO = new StudentDO();
         studentDO.setId(1L);
         studentDO.setNumber(17263630);
-        studentDO.setPassword("123456");
+        studentDO.setPassword(SHA256Util.SHA256("123456"));
         studentDO.setName("周子钦");
         studentDO.setPhone("1321234567");
         studentDO.setClassroom("176班");
@@ -145,6 +146,18 @@ public class StudentDOTest {
     @Test
     public void testDeleteStudentById(){
         studentDAO.deleteStudentById(10L);
+    }
+
+
+    @Test
+    public void testSearchStudents(){
+        StudentDO studentDO = new StudentDO();
+        studentDO.setCollege("信息工程学院");
+        studentDO.setSex("");
+        List<StudentDO> studentDOList = studentDAO.searchStudents(studentDO);
+        for (StudentDO aDo : studentDOList) {
+            System.out.println(aDo);
+        }
     }
 
 

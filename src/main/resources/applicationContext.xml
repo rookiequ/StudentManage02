@@ -68,7 +68,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!-- 3、配置AOP中的通用切入点表达式-->
     <aop:config>
         <!-- 配置切入点表达式-->
-        <aop:pointcut id="pt1" expression="execution(* com.user.service.impl.*.*(..))"></aop:pointcut>
+        <aop:pointcut id="pt1" expression="execution(* com.yctu.student.service.impl.*.*(..))"></aop:pointcut>
         <!--4、建立事务通知和切入点表达式的对应关系 -->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="pt1"></aop:advisor>
     </aop:config>

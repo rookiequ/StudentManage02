@@ -1,14 +1,28 @@
 package com.yctu.student.dao;
 
 import com.yctu.student.domain.AdminDO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.SelectKey;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminDAO {
 
+
+    /**
+     * 根据id获取管理员信息
+     * @param id
+     * @return
+     */
+    @Select("SELECT * FROM tb_admin WHERE id=#{id}")
+    @Results(id = "adminMap", value = {
+            @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT, javaType = Long.class, id = true),
+            @Result(column = "account", property = "account"),
+            @Result(column = "password", property = "password"),
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "modify_time", property = "modifyTime")
+    })
+    AdminDO getAdminById(Long id);
 
     /**
      * 注册管理员账号

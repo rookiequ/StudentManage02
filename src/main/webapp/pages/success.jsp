@@ -1,9 +1,8 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: dell
-  Date: 2020/6/15
-  Time: 22:46
+  Date: 2020/6/16
+  Time: 22:30
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
@@ -13,9 +12,7 @@
     <title>Title</title>
 </head>
 <body>
-  操作成功
-    <%--<c:forEach items="${students}" var="student">
-        ${student.name}
-    </c:forEach>--%>
+    ${student}
+    登录成功！
 </body>
 </html>
