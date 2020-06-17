@@ -9,7 +9,8 @@ package com.yctu.student.constant;
 public class ErrorText {
 
     /** 参数错误 */
-    public static final String PARAMETER_INVALID = "parameter invalid";
+    public static final String PARAMETER_INVALID = "parameter_invalid";
 
-
+    /** 系统异常 */
+    public static final String ERROR_SYSTEM_EXCEPTION = "error_system_exception";
 }

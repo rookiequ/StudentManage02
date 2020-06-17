@@ -150,11 +150,11 @@ public class StudentDOTest {
 
 
     @Test
-    public void testSearchStudents(){
+    public void testGetStudentsBySearch(){
         StudentDO studentDO = new StudentDO();
         studentDO.setCollege("信息工程学院");
         studentDO.setSex("");
-        List<StudentDO> studentDOList = studentDAO.searchStudents(studentDO);
+        List<StudentDO> studentDOList = studentDAO.getStudentsBySearch(studentDO);
         for (StudentDO aDo : studentDOList) {
             System.out.println(aDo);
         }

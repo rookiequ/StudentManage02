@@ -22,6 +22,14 @@
         <property name="suffix" value=".jsp"></property>
     </bean>
 
+    <!--配置自定义类型转换器-->
+    <bean id="converterService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <array>
+                <bean class="com.yctu.student.convert.StringToDateConverter"></bean>
+            </array>
+        </property>
+    </bean>
 
     <!--静态资源不过滤-->
     <mvc:resources mapping="css/**" location="/css/"/>
@@ -30,5 +38,5 @@
     <mvc:resources mapping="plugins/**" location="/plugins/"/>
 
     <!-- 配置spring开启注解mvc的支持 -->
-    <mvc:annotation-driven></mvc:annotation-driven>
+    <mvc:annotation-driven conversion-service="converterService"></mvc:annotation-driven>
 </beans>

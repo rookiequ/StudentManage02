@@ -1,5 +1,6 @@
 package com.yctu.student.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.yctu.student.constant.ResultCode;
 import com.yctu.student.dao.StudentDAO;
 import com.yctu.student.domain.ResultDO;
@@ -28,8 +29,10 @@ public class StudentServiceImpl implements StudentService {
     private StudentDAO studentDAO;
 
     @Override
-    public ResultDO<List<StudentDO>> getAllStudent() {
+    public ResultDO<List<StudentDO>> getAllStudent(int page, int size) {
         try {
+            //分页读取
+            PageHelper.startPage(page, size);
             List<StudentDO> studentDOList = studentDAO.getAllStudent();
             return new ResultDO<List<StudentDO>>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, studentDOList);
         } catch (Exception e) {
@@ -71,6 +74,33 @@ public class StudentServiceImpl implements StudentService {
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return new ResultDO<Long>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION, null);
+        }
+    }
+
+    @Override
+    public ResultDO<Void> deleteStudentById(Long id) {
+        if (id <= 0){
+            return new ResultDO<Void>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
+        }
+        //先判断是否有此学生
+        StudentDO studentById = studentDAO.getStudentById(id);
+        if (studentById == null){
+            return new ResultDO<Void>(false, ResultCode.NO_SUCH_STUDENT, ResultCode.MSG_NO_SUCH_STUDENT);
+        }
+        //删除学生信息
+        studentDAO.deleteStudentById(id);
+        return new ResultDO<Void>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS);
+    }
+
+    @Override
+    public ResultDO<Void> updateStudent(StudentDO studentDO) {
+        try {
+            //TODO 修改之前查询是否有此学生信息，是否要添加此功能
+            studentDAO.updateStudent(studentDO);
+            return new ResultDO<Void>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultDO<Void>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION);
         }
     }
 }

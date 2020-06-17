@@ -31,6 +31,19 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!-- 配置SqlSession的工厂 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
+        <property name="plugins">
+            <array>
+                <!--传入插件对象-->
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <props>
+                            <prop key="helperDialect">mysql</prop>
+                            <prop key="reasonable">true</prop>
+                        </props>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>
     <!-- 配置扫描dao的包,告诉spring生成哪些接口的代理对象，存到spring容器当中 -->
     <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -62,7 +75,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
         <tx:attributes>
             <!--所有方法采用默认事务，读写-->
             <tx:method name="*" propagation="REQUIRED" read-only="false"/>
-            <tx:method name="find*" propagation="SUPPORTS" read-only="true"></tx:method>
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true"></tx:method>
         </tx:attributes>
     </tx:advice>
     <!-- 3、配置AOP中的通用切入点表达式-->

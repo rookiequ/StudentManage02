@@ -19,21 +19,21 @@ public class ResultCode {
 
     /** 参数错误 */
     public static final int PARAMETER_INVALID = 1000;
-    public static final String MSG_PARAMETER_INVALID = "parameter invalid";
+    public static final String MSG_PARAMETER_INVALID = "parameter_invalid";
 
     /** 没有此账号 */
     public static final int NO_SUCH_ACCOUNT = 1001;
-    public static final String MSG_NO_SUCH_ACCOUNT = "no such account";
+    public static final String MSG_NO_SUCH_ACCOUNT = "no_such_account";
 
 
     public static final int NO_SUCH_STUDENT = 1002;
-    public static final String MSG_NO_SUCH_STUDENT = "no such student";
+    public static final String MSG_NO_SUCH_STUDENT = "no_such_student";
 
     //一些可能共性的异常 9000-9999
 
     /** 系统异常 */
     public static final int ERROR_SYSTEM_EXCEPTION = 9000;
-    public static final String MSG_ERROR_SYSTEM_EXCEPTION = "error system exception";
+    public static final String MSG_ERROR_SYSTEM_EXCEPTION = "error_system_exception";
 
 
 }

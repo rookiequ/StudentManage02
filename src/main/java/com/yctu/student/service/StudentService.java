@@ -9,9 +9,11 @@ public interface StudentService {
 
     /**
      * 获取所有学生信息
+     * @param page
+     * @param size
      * @return
      */
-    ResultDO<List<StudentDO>> getAllStudent();
+    ResultDO<List<StudentDO>> getAllStudent(int page, int size);
 
     /**
      * 根据id获取学生信息
@@ -27,5 +29,20 @@ public interface StudentService {
      * @return
      */
     ResultDO<Long> getStudentByNumberAndPassword(String number, String password);
+
+
+    /**
+     * 根据id删除学生信息
+     * @param id
+     * @return
+     */
+    ResultDO<Void> deleteStudentById(Long id);
+
+    /**
+     * 修改学生信息
+     * @param studentDO
+     * @return
+     */
+    ResultDO<Void> updateStudent(StudentDO studentDO);
 }
 

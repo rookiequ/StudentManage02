@@ -191,6 +191,6 @@ public interface StudentDAO {
         + "<when test='entry_time!=null'> AND entry_time=#{entryTime} </when>"
         + "<when test='sex!=null'> AND sex=#{sex} </when>"
         + "</script>"})
-    List<StudentDO> searchStudents(StudentDO studentDO);
+    List<StudentDO> getStudentsBySearch(StudentDO studentDO);
 }
 
