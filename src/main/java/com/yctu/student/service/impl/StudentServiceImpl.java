@@ -103,4 +103,21 @@ public class StudentServiceImpl implements StudentService {
             return new ResultDO<Void>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION);
         }
     }
+
+    @Override
+    public ResultDO<Long> addStudent(StudentDO studentDO) {
+        StudentDO studentByNumber = studentDAO.getStudentByNumber(studentDO.getNumber());
+        if (studentByNumber != null){
+            return new ResultDO<Long>(false, ResultCode.STUDENT_ALREADY_EXIST, ResultCode.MSG_STUDENT_ALREADY_EXIST, null);
+        }
+        try {
+            //密码进行加密处理
+            studentDO.setPassword(SHA256Util.SHA256(studentDO.getPassword()));
+            Long studentId = studentDAO.addStudent(studentDO);
+            return new ResultDO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, studentId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultDO<Long>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION, null);
+        }
+    }
 }

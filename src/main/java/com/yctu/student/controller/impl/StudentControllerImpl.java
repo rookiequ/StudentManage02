@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 
 import javax.servlet.http.HttpSession;
@@ -29,14 +31,16 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/student")
+@SessionAttributes("studentAccount")
 public class StudentControllerImpl implements StudentController {
+
 
     @Autowired
     private StudentService studentService;
 
     @Override
     @RequestMapping("/get-all-students")
-    public String getAllStudent(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
+    public String studentList(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
                                 @RequestParam(name = "size", required = true, defaultValue = "4") int size,
                                 Model model){
         try {
@@ -51,23 +55,11 @@ public class StudentControllerImpl implements StudentController {
         }
     }
 
-    @Override
-    @RequestMapping("/login")
-    public String login(AccountVO accountVO, Model model, HttpSession httpSession) {
-        if (StringUtils.isBlank(accountVO.getAccount()) || StringUtils.isBlank(accountVO.getAccount())){
-            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + ErrorText.PARAMETER_INVALID;
-        }
-        ResultDO<Long> resultDO = studentService.getStudentByNumberAndPassword(accountVO.getAccount(), accountVO.getPassword());
-        if (resultDO.isSuccess() == false){
-            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
-        }
-        model.addAttribute("student", resultDO);
-        return TemplatePath.SUCCESS;
-    }
+
 
     @Override
     @RequestMapping("/get-student-by-id")
-    public String getStudentById(Long id, Model model) {
+    public String updateStudent(Long id, Model model) {
         ResultDO<StudentDO> resultDO = studentService.getStudentById(id);
         if (!resultDO.isSuccess()){
             return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
@@ -79,7 +71,7 @@ public class StudentControllerImpl implements StudentController {
 
     @Override
     @RequestMapping("/update-student")
-    public String updateStudent(StudentDO studentDO) {
+    public String adminUpdateStudent(StudentDO studentDO) {
 
         ResultDO<Void> resultDO = studentService.updateStudent(studentDO);
         if (!resultDO.isSuccess()){
@@ -98,17 +90,28 @@ public class StudentControllerImpl implements StudentController {
         return "redirect:/" + ControllerPath.GET_ALL_STUDENT;
     }
 
+    @Override
+    @RequestMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return TemplatePath.LOGIN;
+    }
 
+    @Override
+    @RequestMapping("/add-student-page")
+    public String addStudent() {
+        return TemplatePath.ADMIN_ADD_STUDENT;
+    }
 
+    @Override
+    @RequestMapping("/add-student")
+    public String addStudent(StudentDO studentDO) {
+        ResultDO<Long> resultDO = studentService.addStudent(studentDO);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        return "redirect:/" + ControllerPath.GET_ALL_STUDENT;
+    }
 
-
-   /* @RequestMapping("/getStudentById")
-    public ModelAndView getStudentById(){
-        StudentDO studentById = studentService.getStudentById(1L);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("list");
-        modelAndView.addObject("students", studentById);
-        return modelAndView;
-    }*/
 
 }

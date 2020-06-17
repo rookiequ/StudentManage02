@@ -23,7 +23,7 @@ public interface StudentService {
     ResultDO<StudentDO> getStudentById(Long id);
 
     /**
-     * 根据账号和密码获取学生信息
+     * 根据账号和密码获取学生id
      * @param number
      * @param password
      * @return
@@ -44,5 +44,13 @@ public interface StudentService {
      * @return
      */
     ResultDO<Void> updateStudent(StudentDO studentDO);
+
+
+    /**
+     * 添加学生信息
+     * @param studentDO
+     * @return
+     */
+    ResultDO<Long> addStudent(StudentDO studentDO);
 }
 

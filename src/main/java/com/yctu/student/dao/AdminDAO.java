@@ -49,5 +49,16 @@ public interface AdminDAO {
     void updateAdmin(AdminDO adminDO);
 
 
+    /**
+     * 根据账号和密码获取管理员信息
+     * @param account
+     * @param password
+     * @return
+     */
+    @ResultMap(value = "adminMap")
+    @Select("SELECT * FROM tb_admin WHERE account=#{account} AND password=#{password}")
+    AdminDO getAdminByAccountAndPassword(@Param("account") String account, @Param("password") String password);
+
+
 }
 

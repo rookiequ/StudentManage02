@@ -18,4 +18,19 @@ public class TemplatePath {
 
     /** 管理员修改学生信息页面 */
     public static final String ADMIN_UPDATE_STUDENT = "admin/update-student";
+
+    /** 登录页面 */
+    public static final String LOGIN = "login";
+
+    /** 学生主页页面 */
+    public static final String STUDENT_MAIN = "student/main";
+
+    /** 管理员添加学生信息页面 */
+    public static final String ADMIN_ADD_STUDENT = "admin/add-student";
+
+    /** 管理员主页页面 */
+    public static final String ADMIN_MAIN = "admin/main";
+
+    /** 老师主页页面 */
+    public static final String TEACHER_MAIN = "teacher/main";
 }

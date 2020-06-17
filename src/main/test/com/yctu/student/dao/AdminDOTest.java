@@ -1,6 +1,7 @@
 package com.yctu.student.dao;
 
 import com.yctu.student.domain.AdminDO;
+import com.yctu.student.utils.SHA256Util;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class AdminDOTest {
     public void testUpdateAdmin(){
         AdminDO adminDO = new AdminDO();
         adminDO.setAccount("zzq");
-        adminDO.setPassword("zzq");
+        adminDO.setPassword(SHA256Util.SHA256("zzq"));
         adminDO.setId(2L);
         adminDAO.updateAdmin(adminDO);
     }

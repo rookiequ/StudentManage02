@@ -51,27 +51,45 @@
     <div class="login-box-body">
         <p class="login-box-msg">登录系统</p>
 
-        <form action="all-admin-index.html" method="get">
+        <form action="user/login" method="get">
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="账号">
+                <input type="email" class="form-control" placeholder="账号" name="account">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="密码">
+                <input type="password" class="form-control" placeholder="密码" name="password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
-            <%--<div class="row">
-                <div class="col-xs-8">
+            <div class="row">
+                <%--<div class="col-xs-8">
                     <div class="checkbox icheck">
                         <label><input type="checkbox"> 记住 下次自动登录</label>
                     </div>
-                </div>
+                </div>--%>
+
+
                 <!-- /.col -->
-                <div class="col-xs-4">
+                <div class="col-xs-6">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
                 </div>
+                <div class="col-xs-6">
+                    <button type="reset" class="btn btn-primary btn-block btn-flat">重写</button>
+                </div>
                 <!-- /.col -->
-            </div>--%>
+            </div>
+            <br>
+            <div class="row">
+                <label class="radio-inline">
+                    <input type="radio" name="userType" id="optionsRadios1" value="admin" checked> 管理员
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="userType" id="optionsRadios2"  value="teacher"> 老师
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="userType" id="optionsRadios3"  value="student"> 学生
+                </label>
+            </div>
+
         </form>
 
         <%--<div class="social-auth-links text-center">
