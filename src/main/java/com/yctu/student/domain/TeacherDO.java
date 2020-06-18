@@ -1,6 +1,7 @@
 package com.yctu.student.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -24,9 +25,9 @@ public class TeacherDO implements Serializable {
 
     private String sex;
 
-    private LocalDateTime createTime;
+    private LocalDate createTime;
 
-    private LocalDateTime modifyTime;
+    private LocalDate modifyTime;
 
     public Long getId() {
         return id;
@@ -76,19 +77,19 @@ public class TeacherDO implements Serializable {
         this.sex = sex;
     }
 
-    public LocalDateTime getCreateTime() {
+    public LocalDate getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(LocalDate createTime) {
         this.createTime = createTime;
     }
 
-    public LocalDateTime getModifyTime() {
+    public LocalDate getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(LocalDateTime modifyTime) {
+    public void setModifyTime(LocalDate modifyTime) {
         this.modifyTime = modifyTime;
     }
 

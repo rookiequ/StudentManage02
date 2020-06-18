@@ -9,6 +9,7 @@ import com.yctu.student.domain.ResultDO;
 import com.yctu.student.domain.TeacherDO;
 import com.yctu.student.service.AdminService;
 import com.yctu.student.service.StudentService;
+import com.yctu.student.service.TeacherService;
 import com.yctu.student.vo.AccountVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,8 @@ public class UserLoginControllerImpl implements UserLoginController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private TeacherService teacherService;
 
     @Override
     @RequestMapping("/login-page")
@@ -73,7 +76,14 @@ public class UserLoginControllerImpl implements UserLoginController {
             return TemplatePath.ADMIN_MAIN;
         } else if (USER_TEACHER.equals(userType)) {
             //老师
-            //TODO 老师登录功能的实现
+            ResultDO<Long> resultDO = teacherService.getTeacherByNumberAndPassword(accountVO.getAccount(), accountVO.getPassword());
+            if (!resultDO.isSuccess()) {
+                //账号或者密码错误
+                model.addAttribute("result", resultDO);
+                return TemplatePath.LOGIN;
+            }
+            Long teacherId = resultDO.getModule();
+            model.addAttribute("teacherAccount", teacherId);
             return TemplatePath.TEACHER_MAIN;
         } else if (USER_STUDENT.equals(userType)) {
             //学生

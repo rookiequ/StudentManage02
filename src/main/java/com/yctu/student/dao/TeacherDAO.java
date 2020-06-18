@@ -1,5 +1,6 @@
 package com.yctu.student.dao;
 
+import com.yctu.student.domain.StudentDO;
 import com.yctu.student.domain.TeacherDO;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -17,7 +18,7 @@ public interface TeacherDAO {
             "number,password,name,college,sex,create_time,modify_time" +
             ")VALUES(" +
             "#{number},#{password},#{name},#{college},#{sex},NOW(),NOW())")
-    @SelectKey(statement = "SELECT LAST_INSET_ID()", keyProperty = "id", keyColumn = "id", resultType = Long.class, before = false)
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", keyColumn = "id", resultType = Long.class, before = false)
     Long addTeacher(TeacherDO teacherDO);
 
 
@@ -87,6 +88,27 @@ public interface TeacherDAO {
     @ResultMap(value = "teacherMap")
     @Select("SELECT * FROM tb_teacher WHERE sex=#{sex}")
     List<TeacherDO> getTeachersBySex(String sex);
+
+
+
+    /**
+     * 根据账号获取老师信息
+     * @param number
+     * @return
+     */
+    @ResultMap(value = "teacherMap")
+    @Select("SELECT * FROM tb_teacher WHERE number=#{number}")
+    TeacherDO getTeacherByNumber(String number);
+
+    /**
+     * 通过账号和密码进行登录
+     * @param number
+     * @param password
+     * @return
+     */
+    @ResultMap(value = "teacherMap")
+    @Select("SELECT * FROM tb_teacher WHERE number=#{number} AND password=#{password}")
+    TeacherDO getTeacherByNumberAndPassword(@Param("number") String number, @Param("password") String password);
 
 }
 

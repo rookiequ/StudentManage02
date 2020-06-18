@@ -33,6 +33,16 @@ public class ResultCode {
     public static final int STUDENT_ALREADY_EXIST = 1003;
     public static final String MSG_STUDENT_ALREADY_EXIST = "student_already_exist";
 
+
+    /** 没有该老师信息 */
+    public static final int NO_SUCH_TEACHER = 1999;
+    public static final String MSG_NO_SUCH_TEACHER= "no_such_teacher";
+
+    /** 老师信息已存在 */
+    public static final int TEACHER_ALREADY_EXIST = 1998;
+    public static final String MSG_TEACHER_ALREADY_EXIST= "teacher_already_exist";
+
+
     //一些可能共性的异常 9000-9999
 
     /** 系统异常 */

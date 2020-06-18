@@ -12,5 +12,8 @@ public class ControllerPath {
     /** 获取所有学生信息请求 */
     public static final String GET_ALL_STUDENT = "student/get-all-students";
 
+    /** 获取所有老师信息请求 */
+    public static final String GET_ALL_TEACHER = "teacher/get-all-teachers";
+
 
 }
