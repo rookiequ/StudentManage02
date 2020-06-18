@@ -2,6 +2,7 @@ package com.yctu.student.dao;
 
 import com.yctu.student.domain.StudentDO;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
@@ -51,7 +52,7 @@ public interface StudentDAO {
      */
     @ResultMap(value = "studentMap")
     @Select("SELECT * FROM tb_student WHERE number=#{number}")
-    StudentDO getStudentByNumber(int number);
+    StudentDO getStudentByNumber(String number);
 
     /**
      * 根据姓名获取学生信息
@@ -192,5 +193,43 @@ public interface StudentDAO {
         + "<when test='sex!=null'> AND sex=#{sex} </when>"
         + "</script>"})
     List<StudentDO> getStudentsBySearch(StudentDO studentDO);
+
+
+    /**
+     * 多对多查询，根据id查询学生及其对应的课程信息
+     * @param id
+     * @return
+     */
+    @ResultMap(value = "studentMap")
+    @Select("SELECT * FROM tb_student s INNER JOIN tb_student_course sc ON s.id=sc.student_id AND sc.course_id=#{id}")
+    StudentDO getStudentAndCourseByCid(Long id);
+
+
+    /**
+     * 根据sid查询学生
+     * @param id
+     * @return
+     */
+    @Select("SELECT * FROM tb_student WHERE id=#{id}")
+    @Results(id = "studentCourseMap", value = {
+            @Result(id = true, column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+            @Result(column = "number", property = "number"),
+            @Result(column = "password", property = "password"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "sex", property = "sex"),
+            @Result(column = "major", property = "major"),
+            @Result(column = "college", property = "college"),
+            @Result(column = "classroom", property = "classroom"),
+            @Result(column = "phone", property = "phone"),
+            @Result(column = "birthday", property = "birthday"),
+            @Result(column = "entry_time", property = "entryTime"),
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "modify_time", property = "modifyTime"),
+            @Result(column = "id", property = "courseDOList", many = @Many(select =
+                    "com.yctu.student.dao.CourseDAO.getStudentAndCourseBySid",fetchType = FetchType.LAZY
+            ))
+    })
+    StudentDO getStudentWithCourses(Long id);
+
 }
 

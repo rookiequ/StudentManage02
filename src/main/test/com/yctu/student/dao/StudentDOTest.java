@@ -1,6 +1,7 @@
 package com.yctu.student.dao;
 
 import com.yctu.student.dao.StudentDAO;
+import com.yctu.student.domain.CourseDO;
 import com.yctu.student.domain.StudentDO;
 import com.yctu.student.utils.SHA256Util;
 import org.junit.Test;
@@ -44,7 +45,7 @@ public class StudentDOTest {
     @Test
     public void testAddStudent(){
         StudentDO studentDO = new StudentDO();
-        studentDO.setNumber(17233620);
+        studentDO.setNumber("17233620");
         studentDO.setPassword("123456");
         studentDO.setName("李彦霖");
         studentDO.setPhone("13212345678");
@@ -62,7 +63,7 @@ public class StudentDOTest {
     public void testUpdateStudent(){
         StudentDO studentDO = new StudentDO();
         studentDO.setId(1L);
-        studentDO.setNumber(17263630);
+        studentDO.setNumber("17263630");
         studentDO.setPassword(SHA256Util.SHA256("123456"));
         studentDO.setName("周子钦");
         studentDO.setPhone("1321234567");
@@ -86,7 +87,7 @@ public class StudentDOTest {
 
     @Test
     public void testGetStudentByNumber(){
-        StudentDO studentByNumber = studentDAO.getStudentByNumber(17263630);
+        StudentDO studentByNumber = studentDAO.getStudentByNumber("17263630");
         System.out.println(studentByNumber);
     }
 
@@ -157,6 +158,16 @@ public class StudentDOTest {
         List<StudentDO> studentDOList = studentDAO.getStudentsBySearch(studentDO);
         for (StudentDO aDo : studentDOList) {
             System.out.println(aDo);
+        }
+    }
+
+
+    @Test
+    public void testGetStudentWithCourses(){
+        StudentDO studentWithCourses = studentDAO.getStudentWithCourses(5L);
+        List<CourseDO> courseDOList = studentWithCourses.getCourseDOList();
+        for (CourseDO courseDO : courseDOList) {
+            System.out.println(courseDO);
         }
     }
 

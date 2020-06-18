@@ -3,6 +3,7 @@ package com.yctu.student.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @ClassName CourseDO
@@ -23,10 +24,17 @@ public class CourseDO implements Serializable {
 
     private double credit;
 
+    private Long teacherId;
+
     private LocalDateTime createTime;
 
     private LocalDateTime modifyTime;
-
+    /** 一个课程对应多个学生 多对多 */
+    private List<StudentDO> studentDOList;
+    /** 一个课程对应一个老师 多对一 */
+    private TeacherDO teacherDO;
+    /** 一个课程对应多个成绩 一对多 */
+    private List<GradeDO> gradeDOList;
 
     public Long getId() {
         return id;
@@ -68,6 +76,14 @@ public class CourseDO implements Serializable {
         this.credit = credit;
     }
 
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
+    }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -84,6 +100,30 @@ public class CourseDO implements Serializable {
         this.modifyTime = modifyTime;
     }
 
+    public List<StudentDO> getStudentDOList() {
+        return studentDOList;
+    }
+
+    public void setStudentDOList(List<StudentDO> studentDOList) {
+        this.studentDOList = studentDOList;
+    }
+
+    public TeacherDO getTeacherDO() {
+        return teacherDO;
+    }
+
+    public void setTeacherDO(TeacherDO teacherDO) {
+        this.teacherDO = teacherDO;
+    }
+
+    public List<GradeDO> getGradeDOList() {
+        return gradeDOList;
+    }
+
+    public void setGradeDOList(List<GradeDO> gradeDOList) {
+        this.gradeDOList = gradeDOList;
+    }
+
     @Override
     public String toString() {
         return "CourseDO{" +
@@ -92,8 +132,12 @@ public class CourseDO implements Serializable {
                 ", name='" + name + '\'' +
                 ", tag=" + tag +
                 ", credit=" + credit +
+                ", teacherId=" + teacherId +
                 ", createTime=" + createTime +
                 ", modifyTime=" + modifyTime +
+                ", studentDOList=" + studentDOList +
+                ", teacherDO=" + teacherDO +
+                ", gradeDOList=" + gradeDOList +
                 '}';
     }
 }

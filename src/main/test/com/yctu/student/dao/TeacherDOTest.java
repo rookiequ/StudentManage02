@@ -3,6 +3,7 @@ package com.yctu.student.dao;
 
 import com.yctu.student.controller.TeacherController;
 import com.yctu.student.controller.impl.TeacherControllerImpl;
+import com.yctu.student.domain.CourseDO;
 import com.yctu.student.domain.TeacherDO;
 import com.yctu.student.service.TeacherService;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
-
+import java.util.List;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -87,5 +88,15 @@ public class TeacherDOTest{
         System.out.println(teacherControllerImpl.addTeacher(teacherDO));
 
 
+    }
+
+
+    @Test
+    public void testGetTeacherWithCourses(){
+        TeacherDO teacherWithCourses = teacherDAO.getTeacherWithCourses(3L);
+        List<CourseDO> courseDOList = teacherWithCourses.getCourseDOList();
+        for (CourseDO courseDO : courseDOList) {
+            System.out.println(courseDO);
+        }
     }
 }

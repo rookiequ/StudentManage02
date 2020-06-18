@@ -3,6 +3,7 @@ package com.yctu.student.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @ClassName StudentDO
@@ -15,7 +16,7 @@ public class StudentDO implements Serializable {
 
     private Long id;
 
-    private int number;
+    private String number;
 
     private String password;
 
@@ -37,8 +38,13 @@ public class StudentDO implements Serializable {
 
     private LocalDateTime createTime;
 
-
     private LocalDateTime modifyTime;
+
+    private List<CourseDO> courseDOList;
+
+    private List<TeacherDO> teacherDOList;
+
+    private List<GradeDO> gradeDOList;
 
 
     public Long getId() {
@@ -49,11 +55,11 @@ public class StudentDO implements Serializable {
         this.id = id;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -145,12 +151,35 @@ public class StudentDO implements Serializable {
         this.modifyTime = modifyTime;
     }
 
+    public List<CourseDO> getCourseDOList() {
+        return courseDOList;
+    }
+
+    public void setCourseDOList(List<CourseDO> courseDOList) {
+        this.courseDOList = courseDOList;
+    }
+
+    public List<TeacherDO> getTeacherDOList() {
+        return teacherDOList;
+    }
+
+    public void setTeacherDOList(List<TeacherDO> teacherDOList) {
+        this.teacherDOList = teacherDOList;
+    }
+
+    public List<GradeDO> getGradeDOList() {
+        return gradeDOList;
+    }
+
+    public void setGradeDOList(List<GradeDO> gradeDOList) {
+        this.gradeDOList = gradeDOList;
+    }
 
     @Override
     public String toString() {
         return "StudentDO{" +
                 "id=" + id +
-                ", number=" + number +
+                ", number='" + number + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", sex='" + sex + '\'' +
@@ -162,6 +191,9 @@ public class StudentDO implements Serializable {
                 ", entryTime=" + entryTime +
                 ", createTime=" + createTime +
                 ", modifyTime=" + modifyTime +
+                ", courseDOList=" + courseDOList +
+                ", teacherDOList=" + teacherDOList +
+                ", gradeDOList=" + gradeDOList +
                 '}';
     }
 }

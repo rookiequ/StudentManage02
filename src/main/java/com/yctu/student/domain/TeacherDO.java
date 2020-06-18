@@ -3,6 +3,7 @@ package com.yctu.student.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @ClassName TeacherDAO
@@ -28,6 +29,10 @@ public class TeacherDO implements Serializable {
     private LocalDate createTime;
 
     private LocalDate modifyTime;
+    /** 一个老师对应多个课程 一对多 */
+    private List<CourseDO> courseDOList;
+    /** 一个老师对应多个学生 多对多 */
+    private List<StudentDO> studentDOList;
 
     public Long getId() {
         return id;
@@ -93,9 +98,25 @@ public class TeacherDO implements Serializable {
         this.modifyTime = modifyTime;
     }
 
+    public List<CourseDO> getCourseDOList() {
+        return courseDOList;
+    }
+
+    public void setCourseDOList(List<CourseDO> courseDOList) {
+        this.courseDOList = courseDOList;
+    }
+
+    public List<StudentDO> getStudentDOList() {
+        return studentDOList;
+    }
+
+    public void setStudentDOList(List<StudentDO> studentDOList) {
+        this.studentDOList = studentDOList;
+    }
+
     @Override
     public String toString() {
-        return "TeacherDAO{" +
+        return "TeacherDO{" +
                 "id=" + id +
                 ", number='" + number + '\'' +
                 ", password='" + password + '\'' +
@@ -104,6 +125,8 @@ public class TeacherDO implements Serializable {
                 ", sex='" + sex + '\'' +
                 ", createTime=" + createTime +
                 ", modifyTime=" + modifyTime +
+                ", courseDOList=" + courseDOList +
+                ", studentDOList=" + studentDOList +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ package com.yctu.student.dao;
 import com.yctu.student.domain.StudentDO;
 import com.yctu.student.domain.TeacherDO;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 import org.apache.ibatis.type.JdbcType;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public interface TeacherDAO {
      * @param id
      * @return
      */
-    @Select("SELECT * FROM tb_teacher WHERE id=#{id}")
+    @Select("SELECT * FROM tb_teacher WHERE id=#{teacherId}")
     @Results(id = "teacherMap", value = {
             @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT, javaType = Long.class, id = true),
             @Result(column = "number", property = "number"),
@@ -60,7 +61,7 @@ public interface TeacherDAO {
             @Result(column = "create_time", property = "createTime"),
             @Result(column = "modify_time", property = "modifyTime")
     })
-    TeacherDO getTeacherById(Long id);
+    TeacherDO getTeacherById(Long teacherId);
 
     /**
      * 获取所有老师信息
@@ -110,5 +111,25 @@ public interface TeacherDAO {
     @Select("SELECT * FROM tb_teacher WHERE number=#{number} AND password=#{password}")
     TeacherDO getTeacherByNumberAndPassword(@Param("number") String number, @Param("password") String password);
 
+
+    /**
+     * 根据id查询老师信息，包含课程信息
+     * @param id
+     * @return
+     */
+    @Select("SELECT * FROM tb_teacher WHERE id=#{id}")
+    @Results(id = "teacherCourseMap", value = {
+            @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT, javaType = Long.class, id = true),
+            @Result(column = "number", property = "number"),
+            @Result(column = "password", property = "password"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "college", property = "college"),
+            @Result(column = "sex", property = "sex"),
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "modify_time", property = "modifyTime"),
+            @Result(column = "id", property = "courseDOList", many = @Many(select =
+            "com.yctu.student.dao.CourseDAO.getCoursesByTeacherId", fetchType = FetchType.LAZY))
+    })
+    TeacherDO getTeacherWithCourses(Long id);
 }
 
