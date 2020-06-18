@@ -31,7 +31,6 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/student")
-@SessionAttributes("studentAccount")
 public class StudentControllerImpl implements StudentController {
 
 
@@ -90,12 +89,7 @@ public class StudentControllerImpl implements StudentController {
         return "redirect:/" + ControllerPath.GET_ALL_STUDENT;
     }
 
-    @Override
-    @RequestMapping("/logout")
-    public String logout(HttpSession httpSession) {
-        httpSession.invalidate();
-        return TemplatePath.LOGIN;
-    }
+
 
     @Override
     @RequestMapping("/add-student-page")
@@ -111,6 +105,18 @@ public class StudentControllerImpl implements StudentController {
             return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
         }
         return "redirect:/" + ControllerPath.GET_ALL_STUDENT;
+    }
+
+    @Override
+    @RequestMapping("/get-student-info")
+    public String getStudentInfo(Long id, Model model) {
+        ResultDO<StudentDO> resultDO = studentService.getStudentById(id);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        StudentDO studentDO = resultDO.getModule();
+        model.addAttribute("student", studentDO);
+        return TemplatePath.ADMIN_INFO_STUDENT;
     }
 
 

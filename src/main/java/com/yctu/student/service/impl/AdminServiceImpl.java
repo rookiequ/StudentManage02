@@ -30,4 +30,15 @@ public class AdminServiceImpl implements AdminService {
         }
         return new ResultDO<AdminDO>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, adminDO);
     }
+
+    @Override
+    public ResultDO<Long> updateAdminPasswordById(Long id, String password) {
+        AdminDO adminById = adminDAO.getAdminById(id);
+        if (adminById == null){
+            return new ResultDO<Long>(false, ResultCode.NO_SUCH_ADMIN, ResultCode.MSG_NO_SUCH_ADMIN, null);
+        }
+        adminById.setPassword(SHA256Util.SHA256(password));
+        adminDAO.updateAdmin(adminById);
+        return new ResultDO<Long>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, adminById.getId());
+    }
 }

@@ -8,6 +8,7 @@ import com.yctu.student.constant.TemplatePath;
 import com.yctu.student.controller.TeacherController;
 import com.yctu.student.domain.ResultDO;
 
+import com.yctu.student.domain.StudentDO;
 import com.yctu.student.domain.TeacherDO;
 import com.yctu.student.service.TeacherService;
 import com.yctu.student.vo.AccountVO;
@@ -23,7 +24,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/teacher")
-@SessionAttributes("teacherAccount")
 public class TeacherControllerImpl implements TeacherController {
 
     @Autowired
@@ -80,12 +80,6 @@ public class TeacherControllerImpl implements TeacherController {
     }
 
 
-    @Override
-    @RequestMapping("/logout")
-    public String logout(HttpSession httpSession) {
-        httpSession.invalidate();
-        return TemplatePath.LOGIN;
-    }
 
 
     @Override
@@ -108,6 +102,17 @@ public class TeacherControllerImpl implements TeacherController {
 
     }
 
+    @Override
+    @RequestMapping("/get-teacher-info")
+    public String getTeacherInfo(Long id, Model model) {
+        ResultDO<TeacherDO> resultDO = teacherService.getTeacherById(id);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        TeacherDO teacherDO = resultDO.getModule();
+        model.addAttribute("teacher", teacherDO);
+        return TemplatePath.ADMIN_INFO_TEACHER;
+    }
 
 
 }

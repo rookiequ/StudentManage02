@@ -43,7 +43,7 @@
     <div class="login-logo">
 
 
-        <a href="all-admin-index.html"><b>学生</b>信息管理系统</a>
+        <a href="#"><b>学生</b>信息管理系统</a>
 
 
     </div>
@@ -51,9 +51,9 @@
     <div class="login-box-body">
         <p class="login-box-msg">登录系统</p>
 
-        <form action="user/login" method="get">
+        <form action="${pageContext.request.contextPath}/user/login" method="post">
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="账号" name="account">
+                <input type="text" class="form-control" placeholder="账号" name="account">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">

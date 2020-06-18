@@ -42,4 +42,13 @@ public class TemplatePath {
 
     /** 老师主页页面 */
     public static final String TEACHER_MAIN = "teacher/main";
+
+    /** 管理员修改密码页面 */
+    public static final String ADMIN_MODIFY_PASSWORD = "admin/modify-password";
+
+    /** 管理员查看学生详细信息页面 */
+    public static final String ADMIN_INFO_STUDENT = "admin/info-student";
+
+    /** 管理员查看老师详细信息页面 */
+    public static final String ADMIN_INFO_TEACHER = "admin/info-teacher";
 }

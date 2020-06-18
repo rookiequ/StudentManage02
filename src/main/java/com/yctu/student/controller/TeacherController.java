@@ -47,13 +47,6 @@ public interface TeacherController {
 
 
 
-    /**
-     * 注销返回登录页面
-     * @param httpSession
-     * @return
-     */
-    String logout(HttpSession httpSession);
-
 
     /**
      * 跳转到添加老师信息页面
@@ -68,6 +61,16 @@ public interface TeacherController {
      * @return
      */
     String addTeacher(TeacherDO teacherDO);
+
+
+
+    /**
+     * 查看老师详细信息
+     * @param id
+     * @param model
+     * @return
+     */
+    String getTeacherInfo(Long id, Model model);
 
 
 

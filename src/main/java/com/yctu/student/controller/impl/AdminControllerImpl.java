@@ -25,17 +25,30 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping("/admin")
-@SessionAttributes("adminAccount")
 public class AdminControllerImpl implements AdminController {
 
     @Autowired
     private AdminService adminService;
 
 
+    @Override
+    @RequestMapping("modify-password-page")
+    public String modifyPassword() {
+        return TemplatePath.ADMIN_MODIFY_PASSWORD;
+    }
 
     @Override
-    @RequestMapping("/logout")
-    public String logout() {
+    @RequestMapping("/modify-password")
+    public String modifyPassword(String newPassword, HttpSession httpSession) {
+
+        AdminDO adminDO = (AdminDO) httpSession.getAttribute("adminAccount");
+        ResultDO<Long> resultDO = adminService.updateAdminPasswordById(adminDO.getId(), newPassword);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        httpSession.removeAttribute("adminAccount");
         return TemplatePath.LOGIN;
     }
+
+
 }

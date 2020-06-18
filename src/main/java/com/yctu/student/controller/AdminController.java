@@ -7,15 +7,24 @@ import javax.servlet.http.HttpSession;
 
 public interface AdminController {
 
-
-
+    /**
+     * 跳转到修改密码的页面
+     * @return
+     */
+    String modifyPassword();
 
 
     /**
-     * 管理员注销
+     * 修改密码后，退出登录
+     * @param
+     * @param httpSession
      * @return
      */
-    String logout();
+    String modifyPassword(String newPassword, HttpSession httpSession);
+
+
+
+
 
 }
 

@@ -3,10 +3,9 @@ package com.yctu.student.controller.impl;
 import com.yctu.student.constant.ErrorText;
 import com.yctu.student.constant.StaticPath;
 import com.yctu.student.constant.TemplatePath;
-import com.yctu.student.controller.UserLoginController;
+import com.yctu.student.controller.UserController;
 import com.yctu.student.domain.AdminDO;
 import com.yctu.student.domain.ResultDO;
-import com.yctu.student.domain.TeacherDO;
 import com.yctu.student.service.AdminService;
 import com.yctu.student.service.StudentService;
 import com.yctu.student.service.TeacherService;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -28,7 +28,8 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping("/user")
-public class UserLoginControllerImpl implements UserLoginController {
+@SessionAttributes({"adminAccount", "teacherAccount", "studentAccount"})
+public class UserControllerImpl implements UserController {
 
     /** 管理员用户 */
     private static final String USER_ADMIN = "admin";
@@ -101,5 +102,14 @@ public class UserLoginControllerImpl implements UserLoginController {
             return null;
         }
 
+
+
+
+    }
+
+    @Override
+    @RequestMapping("/logout")
+    public String logout() {
+        return "redirect:/" + StaticPath.LOGIN;
     }
 }

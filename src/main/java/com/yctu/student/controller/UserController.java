@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
 
-public interface UserLoginController {
+public interface UserController {
 
 
     /**
@@ -23,6 +23,14 @@ public interface UserLoginController {
      * @return
      */
     String login(AccountVO accountVO, String userType, Model model, HttpSession httpSession);
+
+
+    /**
+     * 管理员注销
+     * @return
+     */
+    String logout();
+
 
 }
 

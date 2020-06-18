@@ -15,5 +15,14 @@ public interface AdminService {
     ResultDO<AdminDO> getAdminByAccountAndPassword(String account, String password);
 
 
+    /**
+     * 修改管理员密码
+     * @param id
+     * @param password
+     * @return
+     */
+    ResultDO<Long> updateAdminPasswordById(Long id, String password);
+
+
 }
 

@@ -49,12 +49,6 @@ public interface StudentController {
     String deleteStudentById(Long id);
 
 
-    /**
-     * 注销返回登录页面
-     * @param httpSession
-     * @return
-     */
-    String logout(HttpSession httpSession);
 
 
     /**
@@ -69,6 +63,15 @@ public interface StudentController {
      * @return
      */
     String addStudent(StudentDO studentDO);
+
+
+    /**
+     * 查看学生详细信息
+     * @param id
+     * @param model
+     * @return
+     */
+    String getStudentInfo(Long id, Model model);
 
 
 

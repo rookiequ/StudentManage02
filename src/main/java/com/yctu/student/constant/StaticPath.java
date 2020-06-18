@@ -11,4 +11,7 @@ public class StaticPath {
     /** 统一错误页面 */
     public static final String COMMON_ERROR = "pages/error/error.jsp";
 
+    /** 登录页面 */
+    public static final String LOGIN = "pages/login.jsp";
+
 }

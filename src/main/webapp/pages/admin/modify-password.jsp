@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: dell
-  Date: 2020/6/17
-  Time: 14:41
+  Date: 2020/6/18
+  Time: 12:23
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
@@ -12,7 +12,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>修改学生信息</title>
+    <title>修改密码</title>
     <meta name="description" content="rookiequ_AdminLTE2">
     <meta name="keywords" content="rookiequ_AdminLTE2">
 
@@ -85,80 +85,51 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                学生管理 <small>修改学生</small>
+                管理员 <small>修改密码</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/pages/admin/main.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
-                <li><a
-                        href="${pageContext.request.contextPath}/student/get-all-students">学生列表</a></li>
-                <li class="active">修改学生</li>
+                <%--<li><a
+                        href="${pageContext.request.contextPath}/student/get-all-students">学生列表</a></li>--%>
+                <li class="active">修改密码</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
 
-        <form action="${pageContext.request.contextPath}/student/update-student"
+
+        <form action="${pageContext.request.contextPath}/admin/modify-password"
               method="post">
+
             <!-- 正文区域 -->
             <section class="content"> <!--产品信息-->
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">学生信息</div>
+                    <div class="panel-heading">管理员信息</div>
                     <div class="row data-type">
 
-                        <div class="col-md-2 title">学号</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="number"
-                                   placeholder="学生学号" readonly ="readonly" value="${student.number}">
-                        </div>
-                        <div class="col-md-2 title">姓名</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="name"
-                                   placeholder="学生姓名" value="${student.name}">
-                        </div>
-                        <div class="col-md-2 title">性别</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="sex"
-                                   placeholder="学生性别" value="${student.sex}">
-                        </div>
-                        <div class="col-md-2 title">班级</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="classroom"
-                                   placeholder="学生班级" value="${student.classroom}">
-                        </div>
-                        <div class="col-md-2 title">专业</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="major"
-                                   placeholder="学生专业" value="${student.major}">
-                        </div>
-                        <div class="col-md-2 title">学院</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="college"
-                                   placeholder="学生学院" value="${student.college}">
-                        </div>
-                        <div class="col-md-2 title">电话</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="phone"
-                                   placeholder="学生电话" value="${student.phone}">
-                        </div>
-                        <div class="col-md-2 title">出生日期</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="birthday"
-                                   placeholder="出生日期" value="${student.birthday}">
-                        </div>
-                        <div class="col-md-2 title">入学日期</div>
-                        <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="entryTime"
-                                   placeholder="入学日期" value="${student.entryTime}">
-                        </div>
-                        <div class="col-md-2 data">
-                            <input type="hidden" class="form-control" name="password"
-                                   placeholder="学生密码" value="${student.password}">
-                        </div>
-                        <div class="col-md-2 data">
+
+                        <div class="col-md-12 data">
                             <input type="hidden" class="form-control" name="id"
-                                   placeholder="id" value="${student.id}">
+                                   placeholder="id"  value="${adminAccount.id}">
                         </div>
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-2 title">账号</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" name="account"
+                                   placeholder="账号" readonly ="readonly" value="${adminAccount.account}">
+                        </div>
+                        <div class="col-md-3 data"></div>
+
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-2 title">新密码</div>
+                        <div class="col-md-4 data">
+                            <input type="password" class="form-control" name="newPassword"
+                                   placeholder="新密码">
+                        </div>
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-12 data"></div>
+
 
                     </div>
                 </div>
@@ -171,16 +142,24 @@
                 <!--工具栏/-->
             </section>
             <!-- 正文区域 /-->
+
+
+
         </form>
+
+
+
+
+
+
     </div>
-    <!-- 内容区域 /-->
+    <!-- 内容区域 -->
 
     <!-- 底部导航 -->
     <jsp:include page="footer.jsp"></jsp:include>
     <!-- 底部导航 /-->
 
 </div>
-
 
 <script
         src="${pageContext.request.contextPath}/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -306,3 +285,8 @@
 </body>
 
 </html>
+
+
+
+
+

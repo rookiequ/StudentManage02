@@ -43,6 +43,10 @@ public class ResultCode {
     public static final String MSG_TEACHER_ALREADY_EXIST= "teacher_already_exist";
 
 
+    /** 没有此管理员 */
+    public static final int NO_SUCH_ADMIN = 1004;
+    public static final String  MSG_NO_SUCH_ADMIN = "no_such_admin";
+
     //一些可能共性的异常 9000-9999
 
     /** 系统异常 */
