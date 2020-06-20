@@ -47,6 +47,7 @@ public class AdminControllerImpl implements AdminController {
             return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
         }
         httpSession.removeAttribute("adminAccount");
+
         return TemplatePath.LOGIN;
     }
 

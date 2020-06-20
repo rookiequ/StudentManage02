@@ -72,7 +72,19 @@ public interface TeacherController {
      */
     String getTeacherInfo(Long id, Model model);
 
+    /**
+     * 老师修改密码
+     * @param newPassword
+     * @param httpSession
+     * @return
+     */
+    public String modifyPassword(String newPassword, HttpSession httpSession);
 
 
+    /**
+     * 跳转修改密码页面
+     * @return
+     */
+    public String modifyPassword();
 
 }

@@ -6,6 +6,7 @@ import com.yctu.student.constant.TemplatePath;
 import com.yctu.student.controller.UserController;
 import com.yctu.student.domain.AdminDO;
 import com.yctu.student.domain.ResultDO;
+import com.yctu.student.domain.TeacherDO;
 import com.yctu.student.service.AdminService;
 import com.yctu.student.service.StudentService;
 import com.yctu.student.service.TeacherService;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @ClassName UserLoginControllerImpl
@@ -60,7 +64,7 @@ public class UserControllerImpl implements UserController {
     public String login(AccountVO accountVO,
                         @RequestParam(required = true, name = "userType") String userType,
                         Model model,
-                        HttpSession httpSession) {
+                        HttpSession httpSession)  {
         if (StringUtils.isBlank(accountVO.getAccount()) || StringUtils.isBlank(accountVO.getPassword()) || StringUtils.isBlank(userType)){
             return "redirect:/" + StaticPath.COMMON_ERROR + "?" + ErrorText.PARAMETER_INVALID;
         }
@@ -77,14 +81,14 @@ public class UserControllerImpl implements UserController {
             return TemplatePath.ADMIN_MAIN;
         } else if (USER_TEACHER.equals(userType)) {
             //老师
-            ResultDO<Long> resultDO = teacherService.getTeacherByNumberAndPassword(accountVO.getAccount(), accountVO.getPassword());
+            ResultDO<TeacherDO> resultDO = teacherService.getTeacherByNumberAndPassword(accountVO.getAccount(), accountVO.getPassword());
             if (!resultDO.isSuccess()) {
                 //账号或者密码错误
                 model.addAttribute("result", resultDO);
                 return TemplatePath.LOGIN;
             }
-            Long teacherId = resultDO.getModule();
-            model.addAttribute("teacherAccount", teacherId);
+            TeacherDO teacherDO = resultDO.getModule();
+            model.addAttribute("teacherAccount", teacherDO);
             return TemplatePath.TEACHER_MAIN;
         } else if (USER_STUDENT.equals(userType)) {
             //学生

@@ -69,6 +69,18 @@ public class StudentControllerImpl implements StudentController {
     }
 
     @Override
+    @RequestMapping("/get-student-by-id-teacher")
+    public String updateStudentWithTeacher(Long id, Model model) {
+        ResultDO<StudentDO> resultDO = studentService.getStudentById(id);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        StudentDO studentDO = resultDO.getModule();
+        model.addAttribute("student", studentDO);
+        return TemplatePath.TEACHER_UPDATE_STUDENT;
+    }
+
+    @Override
     @RequestMapping("/update-student")
     public String adminUpdateStudent(StudentDO studentDO) {
 
@@ -77,6 +89,18 @@ public class StudentControllerImpl implements StudentController {
             return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
         }
         return "redirect:/" + ControllerPath.GET_ALL_STUDENT;
+    }
+
+
+    @Override
+    @RequestMapping("/update-student-teacher")
+    public String TeacherUpdateStudent(StudentDO studentDO) {
+
+        ResultDO<Void> resultDO = studentService.updateStudent(studentDO);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        return "redirect:/" + ControllerPath.GET_ALL_COURSE;
     }
 
     @Override
@@ -118,6 +142,22 @@ public class StudentControllerImpl implements StudentController {
         model.addAttribute("student", studentDO);
         return TemplatePath.ADMIN_INFO_STUDENT;
     }
+
+
+    @Override
+    @RequestMapping("/get-student-info-teacher")
+    public String getStudentInfoWithTeacher(Long id, Model model) {
+        ResultDO<StudentDO> resultDO = studentService.getStudentById(id);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        StudentDO studentDO = resultDO.getModule();
+        model.addAttribute("student", studentDO);
+        return TemplatePath.TEACHER_INFO_STUDENT;
+    }
+
+
+
 
 
 }

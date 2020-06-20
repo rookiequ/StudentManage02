@@ -42,6 +42,13 @@ public class ResultCode {
     public static final int TEACHER_ALREADY_EXIST = 1998;
     public static final String MSG_TEACHER_ALREADY_EXIST= "teacher_already_exist";
 
+    /**
+     *课程已存在
+     */
+    public static final int COURSE_ALREADY_EXIST = 1997;
+    public static final String MSG_COURSE_ALREADY_EXIST= "course_already_exist";
+
+
 
     /** 没有此管理员 */
     public static final int NO_SUCH_ADMIN = 1004;

@@ -62,6 +62,13 @@ public interface TeacherService {
      * @param password
      * @return
      */
-    ResultDO<Long> getTeacherByNumberAndPassword(String number, String password);
+    ResultDO<TeacherDO> getTeacherByNumberAndPassword(String number, String password);
 
+    /**
+     * 根据老师id修改密码
+     * @param id
+     * @param newPassword
+     * @return
+     */
+    ResultDO<Long> updateTeacherPasswordById(Long id, String newPassword);
 }

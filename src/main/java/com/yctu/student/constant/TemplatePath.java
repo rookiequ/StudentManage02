@@ -51,4 +51,31 @@ public class TemplatePath {
 
     /** 管理员查看老师详细信息页面 */
     public static final String ADMIN_INFO_TEACHER = "admin/info-teacher";
+
+    /**老师查看课表**/
+    public static final String TEACHER_LIST_COURSE = "teacher/list-course";
+
+    /**老师查看学生**/
+    public static final String TEACHER_LIST_STUDENT = "teacher/list-student";
+
+    /**老师修改密码**/
+    public static final String TEACHER_MODIFY_PASSWORD = "teacher/modify-password";
+
+    /**老师查看学生信息详情 **/
+    public static final String TEACHER_INFO_STUDENT = "teacher/info-student";
+
+    /**老师更新学生信息**/
+    public static final String TEACHER_UPDATE_STUDENT ="teacher/update-student";
+
+    /**老师课程管理界面**/
+    public static final String TEACHER_LIST_COURSE_SECOND = "teacher/list-course-second";
+
+    /**老师课程管理界面**/
+    public static final String TEACHER_INFO_COURSE ="teacher/info-course";
+
+    /**老师跟新课程信息**/
+    public static final String TEACHER_UPDATE_COURSE="teacher/update-course";
+
+
+
 }

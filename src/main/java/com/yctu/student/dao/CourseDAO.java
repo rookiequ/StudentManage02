@@ -4,9 +4,12 @@ import com.yctu.student.domain.CourseDO;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import org.apache.ibatis.type.JdbcType;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
+@Repository
 public interface CourseDAO {
 
 
@@ -19,8 +22,10 @@ public interface CourseDAO {
             "number,name,tag,credit,teacher_id,create_time,modify_time" +
             ")VALUES(" +
             "#{number},#{name},#{tag},#{credit},#{teacherId},NOW(),NOW())")
-    @SelectKey(statement = "SELECT LAST_INSET_ID()", keyProperty = "id", keyColumn = "id", resultType = Long.class, before = false)
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", keyColumn = "id", resultType = Long.class, before = false)
     Long addCourse(CourseDO courseDO);
+
+
 
 
     /**
@@ -44,7 +49,8 @@ public interface CourseDAO {
      */
     @Delete("DELETE FROM tb_course WHERE id=#{id}")
     void deleteCourse(Long id);
-
+    @Delete("DELETE FROM tb_student_course WHERE course_id=#{id}")
+    void deleteCourseAndStudent(Long id);
 
     /**
      * 根据id获取课程信息
@@ -54,6 +60,15 @@ public interface CourseDAO {
     @Select("SELECT * FROM tb_course WHERE id=#{id}")
     @ResultMap(value = "courseTeacherMap")
     CourseDO getCourseById(Long id);
+
+    /**
+     * 根据number获取课程信息
+     * @param number
+     * @return
+     */
+    @Select("SELECT * FROM tb_course WHERE number=#{number}")
+    @ResultMap(value = "courseTeacherMap")
+    CourseDO getCourseBynumber(String number);
 
 
     /**

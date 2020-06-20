@@ -31,6 +31,10 @@ public class CourseDO implements Serializable {
     private LocalDateTime modifyTime;
     /** 一个课程对应多个学生 多对多 */
     private List<StudentDO> studentDOList;
+
+
+
+    private int num;
     /** 一个课程对应一个老师 多对一 */
     private TeacherDO teacherDO;
     /** 一个课程对应多个成绩 一对多 */
@@ -124,6 +128,14 @@ public class CourseDO implements Serializable {
         this.gradeDOList = gradeDOList;
     }
 
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
     @Override
     public String toString() {
         return "CourseDO{" +
@@ -136,6 +148,7 @@ public class CourseDO implements Serializable {
                 ", createTime=" + createTime +
                 ", modifyTime=" + modifyTime +
                 ", studentDOList=" + studentDOList +
+                ", num=" + num +
                 ", teacherDO=" + teacherDO +
                 ", gradeDOList=" + gradeDOList +
                 '}';

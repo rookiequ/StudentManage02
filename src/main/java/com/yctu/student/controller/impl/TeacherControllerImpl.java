@@ -6,6 +6,7 @@ import com.yctu.student.constant.ErrorText;
 import com.yctu.student.constant.StaticPath;
 import com.yctu.student.constant.TemplatePath;
 import com.yctu.student.controller.TeacherController;
+import com.yctu.student.domain.AdminDO;
 import com.yctu.student.domain.ResultDO;
 
 import com.yctu.student.domain.StudentDO;
@@ -114,5 +115,22 @@ public class TeacherControllerImpl implements TeacherController {
         return TemplatePath.ADMIN_INFO_TEACHER;
     }
 
+    @Override
+    @RequestMapping("modify-password-page")
+    public String modifyPassword() {
+        return TemplatePath.TEACHER_MODIFY_PASSWORD;
+    }
+
+    @Override
+    @RequestMapping("/modify-password")
+    public String modifyPassword(String newPassword, HttpSession httpSession) {
+        TeacherDO teacherDO = (TeacherDO) httpSession.getAttribute("teacherAccount");
+        ResultDO<Long> resultDO = teacherService.updateTeacherPasswordById(teacherDO.getId(), newPassword);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        httpSession.removeAttribute("teacherAccount");
+        return TemplatePath.LOGIN;
+    }
 
 }

@@ -73,7 +73,27 @@ public interface StudentController {
      */
     String getStudentInfo(Long id, Model model);
 
+    /**
+     * 老师系统查看学生详情
+     * @param id
+     * @param model
+     * @return
+     */
+    public String getStudentInfoWithTeacher(Long id, Model model);
 
+    /**
+     * 老师系统修改学生信息
+     * @param id
+     * @param model
+     * @return
+     */
+    public String updateStudentWithTeacher(Long id, Model model);
 
+    /**
+     * 老师修改学生信息跳转主页
+     * @param studentDO
+     * @return
+     */
+    public String TeacherUpdateStudent(StudentDO studentDO);
 
 }

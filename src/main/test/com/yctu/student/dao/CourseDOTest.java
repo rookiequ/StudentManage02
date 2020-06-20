@@ -1,7 +1,9 @@
 package com.yctu.student.dao;
 
 import com.yctu.student.domain.CourseDO;
+import com.yctu.student.domain.ResultDO;
 import com.yctu.student.domain.StudentDO;
+import com.yctu.student.service.CourseService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class CourseDOTest {
 
     @Autowired
     private CourseDAO courseDAO;
+    @Autowired
+    private CourseService courseService;
 
 
     @Test
@@ -50,4 +54,23 @@ public class CourseDOTest {
     }
 
 
+    @Test
+    public void testgetCoursesByTeacherId(){
+        List<CourseDO> courseDOList = courseDAO.getCoursesByTeacherId(5L);
+        for (CourseDO courseDO : courseDOList) {
+            System.out.println(courseDO);
+        }
+    }
+
+    @Test
+    public void testAddCourse(){
+        CourseDO courseDO =new CourseDO();
+        courseDO.setNumber("1122334");
+        courseDO.setName("操作系统");
+        courseDO.setTag(1);
+        courseDO.setCredit(3.0);
+        courseDO.setTeacherId(5L);
+        courseService.AddCourse(courseDO);
+
+    }
 }

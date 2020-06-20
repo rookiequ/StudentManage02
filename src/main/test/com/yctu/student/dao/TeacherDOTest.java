@@ -60,6 +60,14 @@ public class TeacherDOTest{
 
     }
 
+    @Test
+    public void testgetTeacherByid(){
+        System.out.println(teacherDAO.getTeacherById(5L));
+
+    }
+
+
+
 
     @Test
     public void testgetAllTeacher(){

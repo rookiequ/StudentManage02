@@ -3,7 +3,9 @@ package com.yctu.student.controller;
 import com.yctu.student.vo.AccountVO;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 public interface UserController {
 
@@ -22,7 +24,7 @@ public interface UserController {
      * @param httpSession
      * @return
      */
-    String login(AccountVO accountVO, String userType, Model model, HttpSession httpSession);
+    String login(AccountVO accountVO, String userType, Model model, HttpSession httpSession) throws IOException;
 
 
     /**
