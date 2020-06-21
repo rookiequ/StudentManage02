@@ -17,7 +17,7 @@
                      class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>${adminAccount.account}</p>
+                <p>${studentAccount.name}</p>
                 <%--<p><security:authentication property="principal.username"></security:authentication></p>--%>
                 <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
             </div>
@@ -27,17 +27,17 @@
         <ul class="sidebar-menu">
             <li class="header">菜单</li>
             <li id="admin-index"><a
-                    href="${pageContext.request.contextPath}/pages/admin/main.jsp"><i
+                    href="${pageContext.request.contextPath}/pages/student/main.jsp"><i
                     class="fa fa-dashboard"></i> <span>首页</span></a></li>
 
-            <li class="treeview"><a href="${pageContext.request.contextPath}/student/get-all-students"> <i class="fa fa-pie-chart"></i>
-                <span>管理学生</span>
+            <li class="treeview"><a href="${pageContext.request.contextPath}/course/student-get-all-courses"> <i class="fa fa-pie-chart"></i>
+                <span>选择课程</span>
             </a></li>
-            <li class="treeview"><a href="${pageContext.request.contextPath}/teacher/get-all-teachers"> <i class="fa fa-cube"></i>
-                <span>管理教师</span>
+            <li class="treeview"><a href="${pageContext.request.contextPath}/course/student-get-selected-courses"> <i class="fa fa-cube"></i>
+                <span>已选课程</span>
             </a></li>
-            <li class="treeview"><a href="${pageContext.request.contextPath}/course/admin-get-all-courses"> <i class="fa fa-laptop"></i>
-                <span>管理课程</span>
+            <li class="treeview"><a href="#"> <i class="fa fa-laptop"></i>
+                <span>查看成绩</span>
             </a></li>
 
 

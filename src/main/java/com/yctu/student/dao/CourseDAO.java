@@ -140,5 +140,23 @@ public interface CourseDAO {
     })
     CourseDO getCourseWithTeacher(Long id);
 
+    /**
+     * 根据课程号查询课程信息（包含老师信息）
+     * @param number
+     * @return
+     */
+    @ResultMap(value = "courseTeacherMap")
+    @Select("SELECT * FROM tb_course WHERE number=#{number}")
+    CourseDO getCourseByNumber(String number);
+
+    /**
+     * 根据学生id 和 课程id 查询已选课程
+     * @param studentId
+     * @param courseId
+     * @return
+     */
+    @Select("SELECT * FROM tb_student_course WHERE student_id=#{studentId} AND course_id=#{courseId}")
+    CourseDO getSelectedCourseBySidAndCid(@Param("studentId")  Long studentId, @Param("courseId") Long courseId);
+
 }
 

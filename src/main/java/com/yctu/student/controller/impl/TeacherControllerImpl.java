@@ -1,17 +1,16 @@
 package com.yctu.student.controller.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.yctu.student.constant.ControllerPath;
-import com.yctu.student.constant.ErrorText;
-import com.yctu.student.constant.StaticPath;
-import com.yctu.student.constant.TemplatePath;
+import com.yctu.student.constant.*;
 import com.yctu.student.controller.TeacherController;
+import com.yctu.student.domain.CourseDO;
 import com.yctu.student.domain.AdminDO;
 import com.yctu.student.domain.ResultDO;
 
 import com.yctu.student.domain.StudentDO;
 import com.yctu.student.domain.TeacherDO;
 import com.yctu.student.service.TeacherService;
+import com.yctu.student.utils.SHA256Util;
 import com.yctu.student.vo.AccountVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +33,7 @@ public class TeacherControllerImpl implements TeacherController {
     @Override
     @RequestMapping("/get-all-teachers")
     public String teacherList(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                              @RequestParam(name = "size", required = true, defaultValue = "4") int size,
+                              @RequestParam(name = "size", required = true, defaultValue = "8") int size,
                               Model model) {
         try {
             ResultDO<List<TeacherDO>> resultDO = teacherService.getAllTeacher(page, size);
@@ -72,10 +71,11 @@ public class TeacherControllerImpl implements TeacherController {
 
     @Override
     @RequestMapping("/delete-teacher-by-id")
-    public String deleteTeacherById(Long id) {
-        ResultDO<Long> resultDO = teacherService.deleteTeacher(id);
+    public String deleteTeacherById(Long id, Model model) {
+        ResultDO<Void> resultDO = teacherService.deleteTeacher(id);
         if (!resultDO.isSuccess()){
-            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+            model.addAttribute("msg",resultDO);
+            return "forward:/" + ControllerPath.GET_ALL_TEACHER;
         }
         return "redirect:/" + ControllerPath.GET_ALL_TEACHER;
     }
@@ -123,7 +123,7 @@ public class TeacherControllerImpl implements TeacherController {
 
     @Override
     @RequestMapping("/modify-password")
-    public String modifyPassword(String newPassword, HttpSession httpSession) {
+    public String modifyPassword(String newPassword, HttpSession httpSession, Model model) {
         TeacherDO teacherDO = (TeacherDO) httpSession.getAttribute("teacherAccount");
         ResultDO<Long> resultDO = teacherService.updateTeacherPasswordById(teacherDO.getId(), newPassword);
         if (!resultDO.isSuccess()){
@@ -132,5 +132,6 @@ public class TeacherControllerImpl implements TeacherController {
         httpSession.removeAttribute("teacherAccount");
         return TemplatePath.LOGIN;
     }
+
 
 }

@@ -12,7 +12,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>修改学生信息</title>
+    <title>修改课程信息</title>
     <meta name="description" content="rookiequ_AdminLTE2">
     <meta name="keywords" content="rookiequ_AdminLTE2">
 
@@ -85,14 +85,14 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                学生管理 <small>修改学生</small>
+                课程管理 <small>修改课程</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/pages/teacher/main.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
                         href="${pageContext.request.contextPath}/course/get-all-courses-teacher?teacher_id=${teacherAccount.id}">学生列表</a></li>
-                <li class="active">修改学生</li>
+                <li class="active">修改课程</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
@@ -121,10 +121,12 @@
                             <input type="text" class="form-control" name="name"
                                    placeholder="课程名"  value="${course.name}">
                         </div>
-                        <div class="col-md-2 title">tag</div>
+                        <div class="col-md-2 title">类型</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="tag"
-                                   placeholder="tag"  value="${course.tag}">
+                            <select class="form-control" name="tag">
+                                <option value="1" <c:if test="${course.tag==1}">selected</c:if>>必修</option>
+                                <option value="2" <c:if test="${course.tag==2}">selected</c:if>>选修</option>
+                            </select>
                         </div>
                         <div class="col-md-2 title">学分</div>
                         <div class="col-md-4 data">

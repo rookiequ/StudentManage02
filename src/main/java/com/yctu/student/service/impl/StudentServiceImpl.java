@@ -2,7 +2,9 @@ package com.yctu.student.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.yctu.student.constant.ResultCode;
+import com.yctu.student.dao.CourseDAO;
 import com.yctu.student.dao.StudentDAO;
+import com.yctu.student.domain.CourseDO;
 import com.yctu.student.domain.ResultDO;
 import com.yctu.student.domain.StudentDO;
 import com.yctu.student.service.StudentService;
@@ -27,6 +29,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentDAO studentDAO;
+    @Autowired
+    private CourseDAO courseDAO;
 
     @Override
     public ResultDO<List<StudentDO>> getAllStudent(int page, int size) {
@@ -59,21 +63,24 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public ResultDO<Long> getStudentByNumberAndPassword(String number, String password) {
+    public ResultDO<StudentDO> getStudentByNumberAndPassword(String number, String password) {
         //先判断参数是否合法
         if (StringUtils.isBlank(number) || StringUtils.isBlank(password)){
-            return new ResultDO<Long>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID, null);
+            return new ResultDO<StudentDO>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID, null);
         }
         try {
             //判断是否有此账号
-            StudentDO studentDO = studentDAO.getStudentByNumberAndPassword(Integer.parseInt(number), SHA256Util.SHA256(password));
+            StudentDO studentDO = studentDAO.getStudentByNumber(number);
             if (studentDO == null){
-                return new ResultDO<Long>(false, ResultCode.NO_SUCH_ACCOUNT, ResultCode.MSG_NO_SUCH_ACCOUNT, null);
+                return new ResultDO<StudentDO>(false, ResultCode.NO_SUCH_ACCOUNT, ResultCode.MSG_NO_SUCH_ACCOUNT, null);
             }
-            return new ResultDO<Long>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, studentDO.getId());
+            if (!studentDO.getPassword().equals(SHA256Util.SHA256(password))){
+                return new ResultDO<StudentDO>(false, ResultCode.PASSWORD_ERROR, ResultCode.MSG_PASSWORD_ERROR, null);
+            }
+            return new ResultDO<StudentDO>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, studentDO);
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            return new ResultDO<Long>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION, null);
+            return new ResultDO<StudentDO>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION, null);
         }
     }
 
@@ -83,9 +90,13 @@ public class StudentServiceImpl implements StudentService {
             return new ResultDO<Void>(false, ResultCode.PARAMETER_INVALID, ResultCode.MSG_PARAMETER_INVALID);
         }
         //先判断是否有此学生
-        StudentDO studentById = studentDAO.getStudentById(id);
+        StudentDO studentById = studentDAO.getStudentWithCourses(id);
         if (studentById == null){
             return new ResultDO<Void>(false, ResultCode.NO_SUCH_STUDENT, ResultCode.MSG_NO_SUCH_STUDENT);
+        }
+        //再判断此此学生是否选课了
+        if (!studentById.getCourseDOList().isEmpty()){
+            return new ResultDO<Void>(false, ResultCode.STUDENT_EXIST_SELECTED_COURSE, ResultCode.MSG_STUDENT_EXIST_SELECTED_COURSE);
         }
         //删除学生信息
         studentDAO.deleteStudentById(id);
@@ -119,5 +130,64 @@ public class StudentServiceImpl implements StudentService {
             e.printStackTrace();
             return new ResultDO<Long>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION, null);
         }
+    }
+
+    @Override
+    public ResultDO<StudentDO> getSelectedCourses(Long studentId) {
+        StudentDO studentWithCourses = studentDAO.getStudentWithCourses(studentId);
+        return new ResultDO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, studentWithCourses);
+    }
+
+    @Override
+    public ResultDO<Void> selectCourse(Long studentId, Long courseId) {
+        StudentDO studentById = studentDAO.getStudentById(studentId);
+        if (studentById == null){
+            return new ResultDO<Void>(false, ResultCode.NO_SUCH_STUDENT, ResultCode.MSG_NO_SUCH_STUDENT);
+        }
+        CourseDO courseById = courseDAO.getCourseById(courseId);
+        if (courseById == null){
+            return new ResultDO<Void>(false, ResultCode.NO_SUCH_COURSE, ResultCode.MSG_NO_SUCH_COURSE);
+        }
+        CourseDO courseDO = courseDAO.getSelectedCourseBySidAndCid(studentId, courseId);
+        if (courseDO != null){
+            return new ResultDO<Void>(false, ResultCode.STUDENT_ALREADY_SELECT_THIS_COURSE, ResultCode.MSG_STUDENT_ALREADY_SELECT_THIS_COURSE);
+        }
+        try {
+            studentDAO.addSelectedCourse(studentId, courseId);
+            return new ResultDO<Void>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultDO<Void>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION);
+        }
+
+    }
+
+    @Override
+    public ResultDO<Void> deleteSelectedCourse(Long studentId, Long courseId) {
+        StudentDO studentById = studentDAO.getStudentById(studentId);
+        if (studentById == null){
+            return new ResultDO<Void>(false, ResultCode.NO_SUCH_STUDENT, ResultCode.MSG_NO_SUCH_STUDENT);
+        }
+        CourseDO courseById = courseDAO.getCourseById(courseId);
+        if (courseById == null){
+            return new ResultDO<Void>(false, ResultCode.NO_SUCH_COURSE, ResultCode.MSG_NO_SUCH_COURSE);
+        }
+        CourseDO courseDO = courseDAO.getSelectedCourseBySidAndCid(studentId, courseId);
+        if (courseDO == null){
+            return new ResultDO<Void>(false, ResultCode.STUDENT_NOT_SELECT_COURSE, ResultCode.MSG_STUDENT_NOT_SELECT_COURSE);
+        }
+        studentDAO.deleteSelectedCourse(studentId, courseId);
+        return new ResultDO<Void>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS);
+    }
+
+    @Override
+    public ResultDO<Void> modifyPassword(Long studentId, String password) {
+        StudentDO studentById = studentDAO.getStudentById(studentId);
+        if (studentById == null){
+            return new ResultDO<Void>(false, ResultCode.NO_SUCH_STUDENT, ResultCode.MSG_NO_SUCH_STUDENT);
+        }
+        studentById.setPassword(SHA256Util.SHA256(password));
+        studentDAO.updateStudent(studentById);
+        return new ResultDO<>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS);
     }
 }

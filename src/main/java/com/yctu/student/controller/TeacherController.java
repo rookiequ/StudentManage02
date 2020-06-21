@@ -1,5 +1,6 @@
 package com.yctu.student.controller;
 
+import com.yctu.student.domain.CourseDO;
 import com.yctu.student.domain.StudentDO;
 import com.yctu.student.domain.TeacherDO;
 import com.yctu.student.vo.AccountVO;
@@ -41,9 +42,10 @@ public interface TeacherController {
     /**
      * 管理员删除信息后返回老师列表页面
      * @param id
+     * @param model
      * @return
      */
-    String deleteTeacherById(Long id);
+    String deleteTeacherById(Long id, Model model);
 
 
 
@@ -76,9 +78,10 @@ public interface TeacherController {
      * 老师修改密码
      * @param newPassword
      * @param httpSession
+     * @param model
      * @return
      */
-    public String modifyPassword(String newPassword, HttpSession httpSession);
+    public String modifyPassword(String newPassword, HttpSession httpSession, Model model);
 
 
     /**
@@ -86,5 +89,7 @@ public interface TeacherController {
      * @return
      */
     public String modifyPassword();
+
+
 
 }

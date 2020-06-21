@@ -174,7 +174,7 @@ public interface StudentDAO {
      */
     @ResultMap(value = "studentMap")
     @Select("SELECT * FROM tb_student WHERE number=#{number} AND password=#{password}")
-    StudentDO getStudentByNumberAndPassword(@Param("number") int number, @Param("password") String password);
+    StudentDO getStudentByNumberAndPassword(@Param("number") String number, @Param("password") String password);
 
 
     /**
@@ -230,6 +230,25 @@ public interface StudentDAO {
             ))
     })
     StudentDO getStudentWithCourses(Long id);
+
+    /**
+     * 学生选课，关联表记录加一
+     * @param studentId
+     * @param courseId
+     */
+    @Insert("INSERT INTO tb_student_course(" +
+            "student_id,course_id,create_time,modify_time" +
+            ")VALUES(" +
+            "#{studentId},#{courseId},NOW(),NOW())")
+    void addSelectedCourse(@Param("studentId") Long studentId, @Param("courseId") Long courseId);
+
+    /**
+     * 删除学生已选课程信息
+     * @param studentId
+     * @param courseId
+     */
+    @Delete("DELETE FROM tb_student_course WHERE student_id=#{studentId} AND course_id=#{courseId}")
+    void deleteSelectedCourse(@Param("studentId") Long studentId, @Param("courseId") Long courseId);
 
 }
 

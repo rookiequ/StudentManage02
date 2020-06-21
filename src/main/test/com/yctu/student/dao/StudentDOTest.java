@@ -62,14 +62,14 @@ public class StudentDOTest {
     @Test
     public void testUpdateStudent(){
         StudentDO studentDO = new StudentDO();
-        studentDO.setId(1L);
-        studentDO.setNumber("17263630");
+        studentDO.setId(5L);
+        studentDO.setNumber("17263830");
         studentDO.setPassword(SHA256Util.SHA256("123456"));
         studentDO.setName("周子钦");
         studentDO.setPhone("1321234567");
         studentDO.setClassroom("176班");
         studentDO.setCollege("信息工程学院");
-        studentDO.setSex("女");
+        studentDO.setSex("男");
         studentDO.setMajor("软件工程");
         studentDO.setBirthday(LocalDate.now());
         studentDO.setEntryTime(LocalDate.now());

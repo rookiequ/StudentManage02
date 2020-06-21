@@ -19,6 +19,14 @@ public interface CourseService {
 
 
     /**
+     * 添加课程信息
+     * @param courseDO
+     * @return
+     */
+    ResultDO<Long> addCourse(CourseDO courseDO);
+
+
+    /**
      * 根据老师id查询老师的课程
      * @param id
      * @param page
@@ -55,4 +63,36 @@ public interface CourseService {
      * @return
      */
     public ResultDO<Long> DeleteCourse(Long id);
+
+    /**
+     * 分页获取所有课程信息
+     * @param page
+     * @param size
+     * @return
+     */
+    ResultDO<List<CourseDO>> getAllCourse(int page, int size);
+
+
+    /**
+     * 根据id获取课程信息
+     * @param id
+     * @return
+     */
+    ResultDO<CourseDO> getCourseById(Long id);
+
+    /**
+     * 修改课程信息
+     * @param courseDO
+     * @return
+     */
+    ResultDO<Void> updateCourse(CourseDO courseDO);
+
+    /**
+     * 根据id删除课程信息
+     * @param id
+     * @return
+     */
+    ResultDO<Void> deleteCourseById(Long id);
+
 }
+

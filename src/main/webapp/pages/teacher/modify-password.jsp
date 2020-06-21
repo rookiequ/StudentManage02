@@ -160,7 +160,13 @@
     <!-- 底部导航 /-->
 
 </div>
-
+<script type="text/javascript">
+    if (${msg.code==1013}) {
+        alert("原密码错误，请重新修改！")
+    }else if (${msg.code==1016}){
+        alert("两次新密码不一致，请重新修改！")
+    }
+</script>
 <script
         src="${pageContext.request.contextPath}/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script

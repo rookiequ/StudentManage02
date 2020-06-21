@@ -25,7 +25,7 @@ public interface TeacherService {
      * 根据id删除老师信息
      * @param id
      */
-    ResultDO<Long> deleteTeacher(Long id);
+    ResultDO<Void> deleteTeacher(Long id);
 
     /**
      * 根据id获取老师信息

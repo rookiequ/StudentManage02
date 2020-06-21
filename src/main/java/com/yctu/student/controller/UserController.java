@@ -31,7 +31,7 @@ public interface UserController {
      * 管理员注销
      * @return
      */
-    String logout();
+    String logout(HttpSession httpSession);
 
 
 }

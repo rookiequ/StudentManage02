@@ -1,20 +1,18 @@
 <%--
   Created by IntelliJ IDEA.
   User: dell
-  Date: 2020/6/17
-  Time: 12:07
+  Date: 2020/6/18
+  Time: 12:23
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-
 <head>
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <title>管理课程列表</title>
+    <title>修改密码</title>
     <meta name="description" content="rookiequ_AdminLTE2">
     <meta name="keywords" content="rookiequ_AdminLTE2">
 
@@ -22,9 +20,7 @@
     <meta
             content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
             name="viewport">
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+
 
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/plugins/bootstrap/css/bootstrap.min.css">
@@ -72,7 +68,7 @@
           href="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.css">
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-purple sidebar-mini">
 
 <div class="wrapper">
 
@@ -84,165 +80,110 @@
     <!-- 导航侧栏 /-->
 
     <!-- 内容区域 -->
-    <!-- @@master = admin-layout.html-->
-    <!-- @@block = content -->
-
     <div class="content-wrapper">
 
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                教师管理 <small>课程列表</small>
+                学生 <small>修改密码</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                <li><a href="#">管理课程</a></li>
-                <li class="active">课程列表</li>
+                <li><a href="${pageContext.request.contextPath}/pages/student/main.jsp"><i
+                        class="fa fa-dashboard"></i> 首页</a></li>
+                <%--<li><a
+                        href="${pageContext.request.contextPath}/student/get-all-students">学生列表</a></li>--%>
+                <li class="active">修改密码</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
 
-        <!-- 正文区域 -->
-        <section class="content">
 
-            <!-- .box-body -->
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">课程列表</h3>
-                </div>
+        <form action="${pageContext.request.contextPath}/student/modify-password"
+              method="post">
 
-                <div class="box-body">
+            <!-- 正文区域 -->
+            <section class="content"> <!--产品信息-->
 
-                    <!-- 数据表格 -->
-                    <div class="table-box">
+                <div class="panel panel-default">
+                    <div class="panel-heading">学生信息</div>
+                    <div class="row data-type">
 
-                        <!--工具栏-->
-                        <div class="pull-left">
-                            <div class="form-group form-inline">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" title="新建"
-                                            onclick="location.href='${pageContext.request.contextPath}/pages/teacher/add-course.jsp'">
-                                        <i class="fa fa-file-o"></i> 新建
-                                    </button>
-                                </div>
-                            </div>
+
+                        <div class="col-md-12 data">
+                            <input type="hidden" class="form-control" name="id"
+                                   placeholder="id"  value="${studentAccount.id}">
                         </div>
-                        <div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm"
-                                       placeholder="搜索"> <span
-                                    class="glyphicon glyphicon-search form-control-feedback" onclick="seacherStudents()"></span>
-                            </div>
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-2 title">账号</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" name="account"
+                                   placeholder="账号" readonly ="readonly" value="${studentAccount.number}">
                         </div>
-                        <!--工具栏/-->
+                        <div class="col-md-3 data"></div>
 
-                        <!--数据列表-->
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>课程编号</th>
-                                <th>课程名</th>
-                                <th>课程类型</th>
-                                <th>学分</th>
-                                <th>教师姓名</th>
-                                <th>教师编号</th>
-                                <th>学院</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${pageInfo.list}" var="course">
-                                    <tr>
-                                        <td>${course.id}</td>
-                                        <td>${course.number}</td>
-                                        <td>${course.name}</td>
-                                        <c:if test="${course.tag==1}">
-                                            <td>必修</td>
-                                        </c:if>
-                                        <c:if test="${course.tag==2}">
-                                            <td>选修</td>
-                                        </c:if>
-                                        <td>${course.credit}</td>
-                                        <td>${course.teacherDO.name}</td>
-                                        <td>${course.teacherDO.id}</td>
-                                        <td>${course.teacherDO.college}</td>
-                                        <td>
-                                           <%-- <!--<a onclick="location.href='${pageContext.request.contextPath}/course/get-all-student-by-teacher?course_id=${course.id}'"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#customerEditDialog">学生信息</a>--!>--%>
-                                            <a onclick="location.href='${pageContext.request.contextPath}/course/get-course-info-teacher?id=${course.id}'"  class="btn btn-info btn-xs" data-toggle="modal" data-target="#customerEditDialog">详情</a>
-                                            <a onclick="location.href='${pageContext.request.contextPath}/course/get-course-by-id-teacher?id=${course.id}'"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#customerEditDialog">修改</a>
-                                            <a href="#" class="btn btn-danger btn-xs" onclick="deleteStudent(${course.id})">删除</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-2 title">原密码</div>
+                        <div class="col-md-4 data">
+                            <input type="password" class="form-control" name="oldPassword"
+                                   placeholder="原密码">
+                        </div>
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-2 title">新密码</div>
+                        <div class="col-md-4 data">
+                            <input type="password" class="form-control" name="newPassword"
+                                   placeholder="新密码">
+                        </div>
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-2 title">确定密码</div>
+                        <div class="col-md-4 data">
+                            <input type="password" class="form-control" name="checkPassword"
+                                   placeholder="确定密码">
+                        </div>
+                        <div class="col-md-3 data"></div>
+
+
+                        <div class="col-md-12 data"></div>
+
 
                     </div>
-                    <!-- 数据表格 /-->
-
-
                 </div>
-                <!-- /.box-body -->
-
-                <!-- .box-footer-->
-                <div class="box-footer">
-                    <div class="col-md-6 text-left pagination">
-                        <span>总数据${pageInfo.total}条，当前为第${pageInfo.pageNum}/${pageInfo.pages}页，有${pageInfo.size}条数据</span>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <ul class="pagination">
-                            <li>
-                                <a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=1&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}" aria-label="Previous">首页</a>
-                            </li>
-                            <li><a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=${pageInfo.pageNum - 1}&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}">上一页</a></li>
-                            <c:forEach begin="1" end="${pageInfo.pages}" var="pageNum">
-                                <li><a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=${pageNum}&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}">${pageNum}</a></li>
-                            </c:forEach>
-                            <li><a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=${pageInfo.pageNum + 1}&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}">下一页</a></li>
-                            <li>
-                                <a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=${pageInfo.pages}&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}" aria-label="Next">尾页</a>
-                            </li>
-                        </ul>
-                    </div>
-
+                <!--订单信息/--> <!--工具栏-->
+                <div class="box-tools text-center">
+                    <button type="submit" class="btn bg-maroon">修改</button>
+                    <button type="button" class="btn bg-default"
+                            onclick="history.back(-1);">返回</button>
                 </div>
-                <!-- /.box-footer-->
+                <!--工具栏/-->
+            </section>
+            <!-- 正文区域 /-->
 
 
 
-            </div>
+        </form>
 
-        </section>
-        <!-- 正文区域 /-->
+
+
+
+
 
     </div>
-    <!-- @@close -->
-    <!-- 内容区域 /-->
+    <!-- 内容区域 -->
 
     <!-- 底部导航 -->
     <jsp:include page="footer.jsp"></jsp:include>
     <!-- 底部导航 /-->
 
 </div>
+
 <script type="text/javascript">
-    if (${msg.code==1009}){
-        alert("有学生选择了此课程！");
-    }else if (${msg.code==1}){
-        alert("删除成功");
+    if (${msg.code==1013}) {
+        alert("原密码错误，请重新修改！")
+    }else if (${msg.code==1016}){
+        alert("两次新密码不一致，请重新修改！")
     }
 </script>
-<SCRIPT>
-    function deleteStudent(id) {
-        if(confirm('确实要删除该课程吗?')) {
-            location.href = "${pageContext.request.contextPath}/course/delete-course-by-id-teacher?id="+id;
-        }
-    }
-
-    function seacherStudents() {
-
-    }
-</SCRIPT>
 
 <script
         src="${pageContext.request.contextPath}/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -328,9 +269,8 @@
 <script
         src="${pageContext.request.contextPath}/plugins/bootstrap-slider/bootstrap-slider.js"></script>
 <script
-        src="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
-<script
-        src="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+        src="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+
 <script>
     $(document).ready(function() {
         // 选择框
@@ -349,27 +289,28 @@
         }
     }
     $(document).ready(function() {
-        // 激活导航位置
-        setSidebarActive("admin-datalist");
-        // 列表按钮
-        $("#dataList td input[type='checkbox']").iCheck({
-            checkboxClass : 'icheckbox_square-blue',
-            increaseArea : '20%'
+        $('#datepicker-a3').datetimepicker({
+            format : "yyyy-mm-dd hh:ii",
+            autoclose : true,
+            todayBtn : true,
+            language : "zh-CN"
         });
-        // 全选操作
-        $("#selall").click(function() {
-            var clicks = $(this).is(':checked');
-            if (!clicks) {
-                $("#dataList td input[type='checkbox']").iCheck("uncheck");
-            } else {
-                $("#dataList td input[type='checkbox']").iCheck("check");
-            }
-            $(this).data("clicks", !clicks);
+    });
+    $(document).ready(function() {
+        // 激活导航位置
+        setSidebarActive("order-manage");
+        $("#datepicker-a3").datetimepicker({
+            format : "yyyy-mm-dd hh:ii",
         });
     });
 </script>
+
+
 </body>
 
 </html>
+
+
+
 
 

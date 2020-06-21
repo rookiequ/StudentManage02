@@ -116,10 +116,10 @@
                             <input type="text" class="form-control" name="name"
                                    placeholder="课程名" readonly ="readonly" value="${course.name}">
                         </div>
-                        <div class="col-md-2 title">tag</div>
+                        <div class="col-md-2 title">课程类型</div>
                         <div class="col-md-4 data">
                             <input type="text" class="form-control" name="tag"
-                                   placeholder="tag" readonly ="readonly" value="${course.tag}">
+                                   placeholder="tag" readonly ="readonly" value="${course.tag==1?'必修':'选修'}">
                         </div>
                         <div class="col-md-2 title">学分</div>
                         <div class="col-md-4 data">
@@ -132,11 +132,17 @@
                             <input type="text" class="form-control" name="teacherId"
                                    placeholder="教师编号" readonly ="readonly" value="${course.teacherId}">
                         </div>
+
+                        <div class="col-md-2 title">教师姓名</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" name="college"
+                                   placeholder="教师姓名" readonly ="readonly" value="${course.teacherDO.name}">
+                        </div>
                         <div class="col-md-4 data">
                             <input type="hidden" class="form-control" name="id"
                                    placeholder="id" value="${course.id}">
                         </div>
-                        <!--
+                        <%--<!--
                         <div class="col-md-2 title">教师姓名</div>
                         <div class="col-md-4 data">
                             <input type="text" class="form-control" name="college"
@@ -166,7 +172,7 @@
                             <input type="hidden" class="form-control" name="id"
                                    placeholder="id" value="${student.id}">
                         </div>
-                        --!>
+                        --!>--%>
                     </div>
                 </div>
                 <!--订单信息/--> <!--工具栏-->

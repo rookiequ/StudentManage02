@@ -1,19 +1,17 @@
 package com.yctu.student.controller.impl;
 
-import com.yctu.student.constant.ErrorText;
-import com.yctu.student.constant.StaticPath;
-import com.yctu.student.constant.TemplatePath;
+import com.yctu.student.constant.*;
 import com.yctu.student.controller.AdminController;
 import com.yctu.student.domain.AdminDO;
 import com.yctu.student.domain.ResultDO;
 import com.yctu.student.service.AdminService;
-import com.yctu.student.vo.AccountVO;
-import org.apache.commons.lang3.StringUtils;
+import com.yctu.student.utils.SHA256Util;
+import com.yctu.student.vo.AdminVO;
+import com.yctu.student.vo.ModifyPasswordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -39,16 +37,34 @@ public class AdminControllerImpl implements AdminController {
 
     @Override
     @RequestMapping("/modify-password")
-    public String modifyPassword(String newPassword, HttpSession httpSession) {
+    public String modifyPassword(ModifyPasswordVO modifyPasswordVO, HttpSession httpSession, Model model) {
+
+        ResultDO<Void> resultDO = new ResultDO<>();
 
         AdminDO adminDO = (AdminDO) httpSession.getAttribute("adminAccount");
-        ResultDO<Long> resultDO = adminService.updateAdminPasswordById(adminDO.getId(), newPassword);
-        if (!resultDO.isSuccess()){
-            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        if (!adminDO.getPassword().equals(SHA256Util.SHA256(modifyPasswordVO.getOldPassword()))){
+            resultDO.set(false, ResultCode.PASSWORD_ERROR, ResultCode.MSG_PASSWORD_ERROR);
+            model.addAttribute("msg", resultDO);
+            return "forward:/" + ControllerPath.ADMIN_MODIFY_PASSWORD_PAGE;
+        }
+        if (!modifyPasswordVO.getNewPassword().equals(modifyPasswordVO.getCheckPassword())){
+            resultDO.set(false, ResultCode.TWO_PASSWORD_NOT_MATCH, ResultCode.MSG_TWO_PASSWORD_NOT_MATCH);
+            model.addAttribute("msg", resultDO);
+            return "forward:/" + ControllerPath.ADMIN_MODIFY_PASSWORD_PAGE;
+        }
+        ResultDO<Long> resultDO1 = adminService.updateAdminPasswordById(adminDO.getId(), modifyPasswordVO.getNewPassword());
+        if (!resultDO1.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO1.getMsg();
         }
         httpSession.removeAttribute("adminAccount");
 
         return TemplatePath.LOGIN;
+    }
+
+    @Override
+    @RequestMapping("/add-admin")
+    public String addAdmin(AdminVO adminVO) {
+        return null;
     }
 
 

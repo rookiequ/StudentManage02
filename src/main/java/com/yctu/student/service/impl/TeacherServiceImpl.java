@@ -72,13 +72,17 @@ public class TeacherServiceImpl implements TeacherService {
      * @param id
      */
     @Override
-    public ResultDO<Long> deleteTeacher(Long id) {
+    public ResultDO<Void> deleteTeacher(Long id) {
+        TeacherDO teacherWithCourses = teacherDAO.getTeacherWithCourses(id);
+        if (!teacherWithCourses.getCourseDOList().isEmpty()){
+            return new ResultDO<Void>(false, ResultCode.EXIST_PUBLISHED_COURSE, ResultCode.MSG_EXIST_PUBLISHED_COURSE);
+        }
         try{
             teacherDAO.deleteTeacher(id);
-            return new ResultDO<Long>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS, null);
+            return new ResultDO<Void>(true, ResultCode.SUCCESS, ResultCode.MSG_SUCCESS);
         }catch (Exception e){
             e.printStackTrace();
-            return new ResultDO<Long>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION, null);
+            return new ResultDO<Void>(false, ResultCode.ERROR_SYSTEM_EXCEPTION, ResultCode.MSG_ERROR_SYSTEM_EXCEPTION);
         }
     }
 

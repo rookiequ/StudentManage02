@@ -7,6 +7,35 @@ import javax.servlet.http.HttpSession;
 
 public interface CourseController {
 
+
+    /**
+     * 老师添加课程信息
+     * @param courseDO
+     * @return
+     */
+    String teacherAddCourse(CourseDO courseDO);
+
+
+    /**
+     * 跳转到课程列表页面
+     * @param page
+     * @param size
+     * @param model
+     * @return
+     */
+    String courseList(int page, int size, Model model);
+
+
+    /**
+     * 根据id获取信息后，然后跳转到修改课程的页面
+     * @param id
+     * @param model
+     * @return
+     */
+    String updateCourse(Long id, Model model);
+
+
+
     /**
      * 根据老师id找出老师的所有课程
      * @param page
@@ -43,6 +72,15 @@ public interface CourseController {
      * @param model
      * @return
      */
+    public String adminGetCourseInfo(Long id, Model model);
+
+
+    /**
+     * 查询课程信息并跳转
+     * @param id
+     * @param model
+     * @return
+     */
     public String getCourseInfo(Long id, Model model);
 
 
@@ -51,8 +89,64 @@ public interface CourseController {
      * @param courseDO
      * @return
      */
-
     public String TeacherUpdateCourse(CourseDO courseDO);
+
+
+
+
+
+    /**
+     * 更新课程信息，然后跳转到课程列表
+     * @param courseDO
+     * @return
+     */
+    String adminUpdateCourse(CourseDO courseDO);
+
+    /**
+     * 删除课程信息后，然后跳转到课程列表
+     * @param id
+     * @param model
+     * @return
+     */
+    String deleteTeacher(Long id, Model model);
+
+
+    /**
+     * 跳转到学生选课页面
+     * @param page
+     * @param size
+     * @param model
+     * @return
+     */
+    String studentGetAllCourses(int page, int size, Model model);
+
+
+    /**
+     * 跳转到学生已选课程页面
+     * @param model
+     * @param httpSession
+     * @return
+     */
+    String studentGetSelectedCourses(Model model, HttpSession httpSession);
+
+    /**
+     * 学生选择课程后跳转到已选课程列表
+     * @param id
+     * @param httpSession
+     * @param model
+     * @return
+     */
+    String studentSelectCourse(Long id, HttpSession httpSession, Model model);
+
+
+    /**
+     * 学生退选课程后跳转到已选课程列表
+     * @param id
+     * @param httpSession
+     * @return
+     */
+    String studentDeleteSelectedCourse(Long id, HttpSession httpSession);
+
 
     /**
      * 跳转更新课表
@@ -72,9 +166,10 @@ public interface CourseController {
     /**
      * 老师端删除课程
      * @param id
+     * @param model
      * @return
      */
-    public String deleteStudentById(Long id);
+    public String teacherDeleteCourseById(Long id, Model model);
 
 
 }

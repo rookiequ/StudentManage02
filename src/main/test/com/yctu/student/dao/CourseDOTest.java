@@ -30,8 +30,9 @@ public class CourseDOTest {
 
     @Test
     public void testGetCourseWithStudent(){
-        CourseDO courseWithStudent = courseDAO.getCourseWithStudents(1L);
+        CourseDO courseWithStudent = courseDAO.getCourseWithStudents(12L);
         List<StudentDO> studentDOList = courseWithStudent.getStudentDOList();
+        System.out.println(studentDOList);
         for (StudentDO studentDO : studentDOList) {
             System.out.println(studentDO);
         }
@@ -55,6 +56,22 @@ public class CourseDOTest {
 
 
     @Test
+    public void testAddCourse(){
+        CourseDO courseDO = new CourseDO();
+        courseDO.setNumber("1111111");
+        courseDO.setName("hhhh");
+        courseDO.setCredit(1.0);
+        courseDO.setTag(2);
+        courseDO.setTeacherId(3L);
+        Long aLong = courseDAO.addCourse(courseDO);
+        System.out.println(aLong);
+
+    }
+
+
+
+
+    @Test
     public void testgetCoursesByTeacherId(){
         List<CourseDO> courseDOList = courseDAO.getCoursesByTeacherId(5L);
         for (CourseDO courseDO : courseDOList) {
@@ -62,15 +79,5 @@ public class CourseDOTest {
         }
     }
 
-    @Test
-    public void testAddCourse(){
-        CourseDO courseDO =new CourseDO();
-        courseDO.setNumber("1122334");
-        courseDO.setName("操作系统");
-        courseDO.setTag(1);
-        courseDO.setCredit(3.0);
-        courseDO.setTeacherId(5L);
-        courseService.AddCourse(courseDO);
 
-    }
 }

@@ -176,7 +176,10 @@
 
                 <!-- .box-footer-->
                 <div class="box-footer">
-                    <div class="col-md-12 text-right">
+                    <div class="col-md-6 text-left pagination">
+                        <span>总数据${pageInfo.total}条，当前为第${pageInfo.pageNum}/${pageInfo.pages}页，有${pageInfo.size}条数据</span>
+                    </div>
+                    <div class="col-md-6 text-right">
                         <ul class="pagination">
                             <li>
                                 <a href="${pageContext.request.contextPath}/teacher/get-all-teachers?page=1&size=${pageInfo.pageSize}" aria-label="Previous">首页</a>
@@ -211,6 +214,13 @@
     <!-- 底部导航 /-->
 
 </div>
+<script type="text/javascript">
+    if (${msg.code==1015}) {
+        alert("该老师还存在发布的课程！")
+    }else if (${msg.code==1}){
+        alert("删除成功！")
+    }
+</script>
 <SCRIPT>
     function deleteTeacher(id) {
         if(confirm('确实要删除该老师吗?')) {

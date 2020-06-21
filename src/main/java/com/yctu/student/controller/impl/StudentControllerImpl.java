@@ -1,23 +1,18 @@
 package com.yctu.student.controller.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.yctu.student.constant.ControllerPath;
-import com.yctu.student.constant.ErrorText;
-import com.yctu.student.constant.StaticPath;
-import com.yctu.student.constant.TemplatePath;
+import com.yctu.student.constant.*;
 import com.yctu.student.controller.StudentController;
 import com.yctu.student.domain.ResultDO;
 import com.yctu.student.domain.StudentDO;
 import com.yctu.student.service.StudentService;
-import com.yctu.student.vo.AccountVO;
-import org.apache.commons.lang3.StringUtils;
+import com.yctu.student.utils.SHA256Util;
+import com.yctu.student.vo.ModifyPasswordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 
 import javax.servlet.http.HttpSession;
@@ -40,7 +35,7 @@ public class StudentControllerImpl implements StudentController {
     @Override
     @RequestMapping("/get-all-students")
     public String studentList(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                @RequestParam(name = "size", required = true, defaultValue = "4") int size,
+                                @RequestParam(name = "size", required = true, defaultValue = "8") int size,
                                 Model model){
         try {
             ResultDO<List<StudentDO>> resultDO = studentService.getAllStudent(page, size);
@@ -104,11 +99,44 @@ public class StudentControllerImpl implements StudentController {
     }
 
     @Override
+    @RequestMapping("/modify-password-page")
+    public String modifyPassword() {
+        return TemplatePath.STUDENT_MODIFY_PASSWORD;
+    }
+
+    @Override
+    @RequestMapping("/modify-password")
+    public String modifyPassword(ModifyPasswordVO modifyPasswordVO, HttpSession httpSession, Model model) {
+
+        ResultDO<Void> resultDO = new ResultDO<>();
+        //TODO 这些业务处理是写到controller层还是service层
+        StudentDO studentDO = (StudentDO) httpSession.getAttribute("studentAccount");
+        if (!studentDO.getPassword().equals(SHA256Util.SHA256(modifyPasswordVO.getOldPassword()))){
+            resultDO.set(false, ResultCode.PASSWORD_ERROR, ResultCode.MSG_PASSWORD_ERROR);
+            model.addAttribute("msg", resultDO);
+            return "forward:/" + ControllerPath.STUDENT_MODIFY_PASSWORD_PAGE;
+        }
+        if (!modifyPasswordVO.getNewPassword().equals(modifyPasswordVO.getCheckPassword())){
+            resultDO.set(false, ResultCode.TWO_PASSWORD_NOT_MATCH, ResultCode.MSG_TWO_PASSWORD_NOT_MATCH);
+            model.addAttribute("msg", resultDO);
+            return "forward:/" + ControllerPath.STUDENT_MODIFY_PASSWORD_PAGE;
+        }
+        ResultDO<Void> resultDO1 = studentService.modifyPassword(studentDO.getId(), modifyPasswordVO.getNewPassword());
+        if (!resultDO1.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO1.getMsg();
+        }
+        //移除session信息
+        httpSession.removeAttribute("studentAccount");
+        return TemplatePath.LOGIN;
+    }
+
+    @Override
     @RequestMapping("/delete-student-by-id")
-    public String deleteStudentById(Long id) {
+    public String deleteStudentById(Long id, Model model) {
         ResultDO<Void> resultDO = studentService.deleteStudentById(id);
         if (!resultDO.isSuccess()){
-            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+            model.addAttribute("msg",resultDO);
+            return "forward:/" + ControllerPath.GET_ALL_STUDENT;
         }
         return "redirect:/" + ControllerPath.GET_ALL_STUDENT;
     }

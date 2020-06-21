@@ -1,11 +1,13 @@
 package com.yctu.student.controller.impl;
 
 import com.yctu.student.constant.ErrorText;
+import com.yctu.student.constant.ResultCode;
 import com.yctu.student.constant.StaticPath;
 import com.yctu.student.constant.TemplatePath;
 import com.yctu.student.controller.UserController;
 import com.yctu.student.domain.AdminDO;
 import com.yctu.student.domain.ResultDO;
+import com.yctu.student.domain.StudentDO;
 import com.yctu.student.domain.TeacherDO;
 import com.yctu.student.service.AdminService;
 import com.yctu.student.service.StudentService;
@@ -32,7 +34,7 @@ import java.io.PrintWriter;
  */
 @Controller
 @RequestMapping("/user")
-@SessionAttributes({"adminAccount", "teacherAccount", "studentAccount"})
+@SessionAttributes({"adminAccount", "teacherAccount", "studentAccount","result"})
 public class UserControllerImpl implements UserController {
 
     /** 管理员用户 */
@@ -66,7 +68,9 @@ public class UserControllerImpl implements UserController {
                         Model model,
                         HttpSession httpSession)  {
         if (StringUtils.isBlank(accountVO.getAccount()) || StringUtils.isBlank(accountVO.getPassword()) || StringUtils.isBlank(userType)){
-            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + ErrorText.PARAMETER_INVALID;
+            ResultDO<Void> resultDO = new ResultDO<Void>(false, ResultCode.MUST_INPUT_ACCOUNT_PASSWORD_USERTYPE, ResultCode.MSG_MUST_INPUT_ACCOUNT_PASSWORD_USERTYPE);
+            model.addAttribute("result", resultDO);
+            return TemplatePath.LOGIN;
         }
         if (USER_ADMIN.equals(userType)) {
             //管理员
@@ -92,28 +96,27 @@ public class UserControllerImpl implements UserController {
             return TemplatePath.TEACHER_MAIN;
         } else if (USER_STUDENT.equals(userType)) {
             //学生
-            ResultDO<Long> resultDO = studentService.getStudentByNumberAndPassword(accountVO.getAccount(), accountVO.getPassword());
+            ResultDO<StudentDO> resultDO = studentService.getStudentByNumberAndPassword(accountVO.getAccount(), accountVO.getPassword());
             if (!resultDO.isSuccess()) {
                 //账号或者密码错误
                 model.addAttribute("result", resultDO);
                 return TemplatePath.LOGIN;
             }
             //TODO 用户登录的session问题
-            Long studentId = resultDO.getModule();
-            model.addAttribute("studentId", studentId);
+            StudentDO studentDO = resultDO.getModule();
+            model.addAttribute("studentAccount", studentDO);
             return TemplatePath.STUDENT_MAIN;
         } else {
-            return null;
+            return TemplatePath.LOGIN;
         }
-
-
 
 
     }
 
     @Override
     @RequestMapping("/logout")
-    public String logout() {
+    public String logout(HttpSession httpSession) {
+        //TODO 移除session问题
         return "redirect:/" + StaticPath.LOGIN;
     }
 }

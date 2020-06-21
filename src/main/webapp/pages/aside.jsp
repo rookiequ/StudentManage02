@@ -36,7 +36,7 @@
             <li class="treeview"><a href="${pageContext.request.contextPath}/teacher/get-all-teachers"> <i class="fa fa-cube"></i>
                 <span>管理教师</span>
             </a></li>
-            <li class="treeview"><a href="${pageContext.request.contextPath}/course/admin-get-all-courses"> <i class="fa fa-laptop"></i>
+            <li class="treeview"><a href="${pageContext.request.contextPath}/course/get-all-courses"> <i class="fa fa-laptop"></i>
                 <span>管理课程</span>
             </a></li>
 

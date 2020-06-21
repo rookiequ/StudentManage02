@@ -117,7 +117,7 @@
                     <div class="table-box">
 
                         <!--工具栏-->
-                        <div class="pull-left">
+                       <%-- <div class="pull-left">
                             <div class="form-group form-inline">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default" title="新建"
@@ -126,7 +126,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div>--%>
                         <div class="box-tools pull-right">
                             <div class="has-feedback">
                                 <input type="text" class="form-control input-sm"
@@ -161,10 +161,10 @@
                                     <td>${student.major}</td>
                                     <td>${student.college}</td>
                                     <td>
-                                        <a onclick="location.href='${pageContext.request.contextPath}/student/get-student-by-id-teacher?id=${student.id}'"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#customerEditDialog">修改</a>
+                                        <%--<a onclick="location.href='${pageContext.request.contextPath}/student/get-student-by-id-teacher?id=${student.id}'"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#customerEditDialog">修改</a>--%>
                                         <a onclick="location.href='${pageContext.request.contextPath}/student/get-student-info-teacher?id=${student.id}'"  class="btn btn-info btn-xs" data-toggle="modal" data-target="#customerEditDialog">详情</a>
                                             <%--<a href="${pageContext.request.contextPath}/student/get-student-by-id?id=${student.id}"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#customerEditDialog">修改</a>--%>
-                                        <a href="#" class="btn btn-danger btn-xs" onclick="deleteStudent(${student.id})">删除</a>
+                                        <%--<a href="#" class="btn btn-danger btn-xs" onclick="deleteStudent(${student.id})">删除</a>--%>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -180,7 +180,10 @@
 
                 <!-- .box-footer-->
                 <div class="box-footer">
-                    <div class="col-md-12 text-right">
+                    <div class="col-md-6 text-left pagination">
+                        <span>总数据${pageInfo.total}条，当前为第${pageInfo.pageNum}/${pageInfo.pages}页，有${pageInfo.size}条数据</span>
+                    </div>
+                    <div class="col-md-6 text-right">
                         <ul class="pagination">
                             <li>
                                 <a href="${pageContext.request.contextPath}/course/get-all-student-by-teacher?page=1&size=${pageInfo.pageSize}&course_id=${courseid}" aria-label="Previous">首页</a>

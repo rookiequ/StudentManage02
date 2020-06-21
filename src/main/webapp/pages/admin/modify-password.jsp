@@ -122,12 +122,28 @@
                         <div class="col-md-3 data"></div>
 
                         <div class="col-md-3 data"></div>
+                        <div class="col-md-2 title">原密码</div>
+                        <div class="col-md-4 data">
+                            <input type="password" class="form-control" name="oldPassword"
+                                   placeholder="原密码">
+                        </div>
+                        <div class="col-md-3 data"></div>
+                        <div class="col-md-3 data"></div>
                         <div class="col-md-2 title">新密码</div>
                         <div class="col-md-4 data">
                             <input type="password" class="form-control" name="newPassword"
                                    placeholder="新密码">
                         </div>
                         <div class="col-md-3 data"></div>
+                             <div class="col-md-3 data"></div>
+                        <div class="col-md-2 title">确定密码</div>
+                        <div class="col-md-4 data">
+                            <input type="password" class="form-control" name="checkPassword"
+                                   placeholder="确定密码">
+                        </div>
+                        <div class="col-md-3 data"></div>
+
+
                         <div class="col-md-12 data"></div>
 
 
@@ -160,6 +176,13 @@
     <!-- 底部导航 /-->
 
 </div>
+<script type="text/javascript">
+    if (${msg.code==1013}) {
+        alert("原密码错误，请重新修改！")
+    }else if (${msg.code==1016}){
+        alert("两次新密码不一致，请重新修改！")
+    }
+</script>
 
 <script
         src="${pageContext.request.contextPath}/plugins/jQuery/jquery-2.2.3.min.js"></script>

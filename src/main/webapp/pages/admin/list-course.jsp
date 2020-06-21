@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: dell
-  Date: 2020/6/17
-  Time: 12:07
+  Date: 2020/6/19
+  Time: 14:36
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
@@ -92,7 +92,7 @@
         <!-- 内容头部 -->
         <section class="content-header">
             <h1>
-                教师管理 <small>课程列表</small>
+                管理员管理 <small>课程列表</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
@@ -121,7 +121,7 @@
                             <div class="form-group form-inline">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default" title="新建"
-                                            onclick="location.href='${pageContext.request.contextPath}/pages/teacher/add-course.jsp'">
+                                            onclick="location.href='${pageContext.request.contextPath}/pages/admin/add-course.jsp'">
                                         <i class="fa fa-file-o"></i> 新建
                                     </button>
                                 </div>
@@ -131,7 +131,7 @@
                             <div class="has-feedback">
                                 <input type="text" class="form-control input-sm"
                                        placeholder="搜索"> <span
-                                    class="glyphicon glyphicon-search form-control-feedback" onclick="seacherStudents()"></span>
+                                    class="glyphicon glyphicon-search form-control-feedback" onclick="searchCourses()"></span>
                             </div>
                         </div>
                         <!--工具栏/-->
@@ -142,39 +142,35 @@
                             <tr>
                                 <th>ID</th>
                                 <th>课程编号</th>
-                                <th>课程名</th>
+                                <th>课程名称</th>
                                 <th>课程类型</th>
                                 <th>学分</th>
-                                <th>教师姓名</th>
-                                <th>教师编号</th>
-                                <th>学院</th>
+                                <th>讲师</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${pageInfo.list}" var="course">
-                                    <tr>
-                                        <td>${course.id}</td>
-                                        <td>${course.number}</td>
-                                        <td>${course.name}</td>
-                                        <c:if test="${course.tag==1}">
-                                            <td>必修</td>
-                                        </c:if>
-                                        <c:if test="${course.tag==2}">
-                                            <td>选修</td>
-                                        </c:if>
-                                        <td>${course.credit}</td>
-                                        <td>${course.teacherDO.name}</td>
-                                        <td>${course.teacherDO.id}</td>
-                                        <td>${course.teacherDO.college}</td>
-                                        <td>
-                                           <%-- <!--<a onclick="location.href='${pageContext.request.contextPath}/course/get-all-student-by-teacher?course_id=${course.id}'"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#customerEditDialog">学生信息</a>--!>--%>
-                                            <a onclick="location.href='${pageContext.request.contextPath}/course/get-course-info-teacher?id=${course.id}'"  class="btn btn-info btn-xs" data-toggle="modal" data-target="#customerEditDialog">详情</a>
-                                            <a onclick="location.href='${pageContext.request.contextPath}/course/get-course-by-id-teacher?id=${course.id}'"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#customerEditDialog">修改</a>
-                                            <a href="#" class="btn btn-danger btn-xs" onclick="deleteStudent(${course.id})">删除</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                            <c:forEach items="${pageInfo.list}" var="course">
+                                <tr>
+                                    <td>${course.id}</td>
+                                    <td>${course.number}</td>
+                                    <td>${course.name}</td>
+                                    <c:if test="${course.tag==1}">
+                                        <td>必修</td>
+                                    </c:if>
+                                    <c:if test="${course.tag==2}">
+                                        <td>选修</td>
+                                    </c:if>
+                                    <td>${course.credit}</td>
+                                    <td>${course.teacherDO.name}</td>
+                                    <td>
+                                        <a onclick="location.href='${pageContext.request.contextPath}/course/get-course-by-id?id=${course.id}'"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#customerEditDialog">修改</a>
+                                        <a onclick="location.href='${pageContext.request.contextPath}/course/get-course-info?id=${course.id}'"  class="btn btn-info btn-xs" data-toggle="modal" data-target="#customerEditDialog">详情</a>
+                                            <%--<a href="${pageContext.request.contextPath}/student/get-student-by-id?id=${student.id}"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#customerEditDialog">修改</a>--%>
+                                        <a href="#" class="btn btn-danger btn-xs" onclick="deleteCourse(${course.id})">删除</a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
 
@@ -193,15 +189,15 @@
                     <div class="col-md-6 text-right">
                         <ul class="pagination">
                             <li>
-                                <a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=1&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}" aria-label="Previous">首页</a>
+                                <a href="${pageContext.request.contextPath}/course/admin-get-all-courses?page=1&size=${pageInfo.pageSize}" aria-label="Previous">首页</a>
                             </li>
-                            <li><a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=${pageInfo.pageNum - 1}&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}">上一页</a></li>
+                            <li><a href="${pageContext.request.contextPath}/course/admin-get-all-courses?page=${pageInfo.pageNum - 1}&size=${pageInfo.pageSize}">上一页</a></li>
                             <c:forEach begin="1" end="${pageInfo.pages}" var="pageNum">
-                                <li><a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=${pageNum}&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}">${pageNum}</a></li>
+                                <li><a href="${pageContext.request.contextPath}/course/admin-get-all-courses?page=${pageNum}&size=${pageInfo.pageSize}">${pageNum}</a></li>
                             </c:forEach>
-                            <li><a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=${pageInfo.pageNum + 1}&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}">下一页</a></li>
+                            <li><a href="${pageContext.request.contextPath}/course/admin-get-all-courses?page=${pageInfo.pageNum + 1}&size=${pageInfo.pageSize}">下一页</a></li>
                             <li>
-                                <a href="${pageContext.request.contextPath}/course/get-all-courses-teacher?page=${pageInfo.pages}&size=${pageInfo.pageSize}&teacher_id=${teacherAccount.id}" aria-label="Next">尾页</a>
+                                <a href="${pageContext.request.contextPath}/course/admin-get-all-courses?page=${pageInfo.pages}&size=${pageInfo.pageSize}" aria-label="Next">尾页</a>
                             </li>
                         </ul>
                     </div>
@@ -232,14 +228,15 @@
         alert("删除成功");
     }
 </script>
+
 <SCRIPT>
-    function deleteStudent(id) {
+    function deleteCourse(id) {
         if(confirm('确实要删除该课程吗?')) {
-            location.href = "${pageContext.request.contextPath}/course/delete-course-by-id-teacher?id="+id;
+            location.href = "${pageContext.request.contextPath}/course/delete-course-by-id?id="+id;
         }
     }
 
-    function seacherStudents() {
+    function searchCourses() {
 
     }
 </SCRIPT>
@@ -371,5 +368,3 @@
 </body>
 
 </html>
-
-

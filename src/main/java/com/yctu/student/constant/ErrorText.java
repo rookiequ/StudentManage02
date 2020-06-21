@@ -13,4 +13,10 @@ public class ErrorText {
 
     /** 系统异常 */
     public static final String ERROR_SYSTEM_EXCEPTION = "error_system_exception";
+
+    /** 原密码有误 */
+    public static final String OLD_PASSWORD_ERROR = "password_error";
+
+    /** 两次密码不匹配 */
+    public static final String TWO_PASSWORD_NOT_MATCH = "two_password_not_match";
 }

@@ -164,7 +164,7 @@
                 </div>
                 <!--订单信息/--> <!--工具栏-->
                 <div class="box-tools text-center">
-                    <button type="submit" class="btn bg-maroon">修改</button>
+                    <button type="submit" class="btn bg-maroon">更新</button>
                     <button type="button" class="btn bg-default"
                             onclick="history.back(-1);">返回</button>
                 </div>

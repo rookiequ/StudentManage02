@@ -3,6 +3,7 @@ package com.yctu.student.controller;
 
 import com.yctu.student.domain.StudentDO;
 import com.yctu.student.vo.AccountVO;
+import com.yctu.student.vo.ModifyPasswordVO;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
@@ -44,9 +45,10 @@ public interface StudentController {
     /**
      * 管理员删除信息后返回学生列表页面
      * @param id
+     * @param model
      * @return
      */
-    String deleteStudentById(Long id);
+    String deleteStudentById(Long id, Model model);
 
 
 
@@ -95,5 +97,20 @@ public interface StudentController {
      * @return
      */
     public String TeacherUpdateStudent(StudentDO studentDO);
+
+    /**
+     * 跳转到学生修改密码页面
+     * @return
+     */
+    String modifyPassword();
+
+    /**
+     * 学生修改密码后跳转
+     * @param modifyPasswordVO
+     * @param httpSession
+     * @param model
+     * @return
+     */
+    String modifyPassword(ModifyPasswordVO modifyPasswordVO, HttpSession httpSession, Model model);
 
 }

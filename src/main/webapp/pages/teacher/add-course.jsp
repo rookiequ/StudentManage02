@@ -116,10 +116,12 @@
                             <input type="text" class="form-control" name="name"
                                    placeholder="课程名">
                         </div>
-                        <div class="col-md-2 title">tag</div>
+                        <div class="col-md-2 title">类型</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" name="tag"
-                                   placeholder="tag" >
+                            <select class="form-control" name="tag">
+                                <option value="1" selected>必修</option>
+                                <option value="2" >选修</option>
+                            </select>
                         </div>
                         <div class="col-md-2 title">学分</div>
                         <div class="col-md-4 data">

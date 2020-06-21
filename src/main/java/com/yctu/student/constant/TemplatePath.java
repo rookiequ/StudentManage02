@@ -52,6 +52,21 @@ public class TemplatePath {
     /** 管理员查看老师详细信息页面 */
     public static final String ADMIN_INFO_TEACHER = "admin/info-teacher";
 
+    /** 管理员查看课程列表页面 */
+    public static final String ADMIN_LIST_COURSE = "admin/list-course";
+
+    /** 管理员修改课程页面 */
+    public static final String ADMIN_UPDATE_COURSE = "admin/update-course";
+
+    /** 管理员查看课程详细信息 */
+    public static final String ADMIN_INFO_COURSE = "admin/info-course";
+
+    /** 学生选择课程页面 */
+    public static final String STUDENT_LIST_COURSE = "student/list-course";
+
+    /** 学生已选课程页面 */
+    public static final String STUDENT_SELECTED_COURSE = "student/selected-course";
+
     /**老师查看课表**/
     public static final String TEACHER_LIST_COURSE = "teacher/list-course";
 
@@ -76,6 +91,6 @@ public class TemplatePath {
     /**老师跟新课程信息**/
     public static final String TEACHER_UPDATE_COURSE="teacher/update-course";
 
-
-
+    /** 学生修改密码页面 */
+    public static final String STUDENT_MODIFY_PASSWORD = "student/modify-password";
 }

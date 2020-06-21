@@ -11,6 +11,8 @@ import com.yctu.student.domain.ResultDO;
 import com.yctu.student.domain.StudentDO;
 import com.yctu.student.domain.TeacherDO;
 import com.yctu.student.service.CourseService;
+import com.yctu.student.service.CourseService;
+import com.yctu.student.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,21 +22,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-
 /**
  * @ClassName CourseControllerImpl
- * @Description CourseController的实现类
+ * @Description
  * @Author qlq
- * @Date 2020-06-16 16:05
+ * @Date 2020-06-19 12:13
  */
-
-
 @Controller
 @RequestMapping("/course")
 public class CourseControllerImpl implements CourseController {
 
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private StudentService studentService;
 
     @Override
     @RequestMapping("/get-all-course-by-teacher")
@@ -157,12 +158,139 @@ public class CourseControllerImpl implements CourseController {
 
     @Override
     @RequestMapping("/delete-course-by-id-teacher")
-    public String deleteStudentById(Long id) {
-        ResultDO<Long> resultDO = courseService.DeleteCourse(id);
+    public String teacherDeleteCourseById(Long id, Model model) {
+        ResultDO<Void> resultDO = courseService.deleteCourseById(id);
         if (!resultDO.isSuccess()){
-            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+            //将错误信息传到前端，通过js，使用弹窗提示错误原因
+            model.addAttribute("msg", resultDO);
+            return "forward:/" + ControllerPath.GET_ALL_COURSE_SECOND;
         }
         return "redirect:/" + ControllerPath.GET_ALL_COURSE_SECOND;
     }
+
+
+
+
+    @Override
+    @RequestMapping("/add-course")
+    public String teacherAddCourse(CourseDO courseDO) {
+
+        ResultDO<Long> resultDO = courseService.addCourse(courseDO);
+        if (!resultDO.isSuccess()){
+            //TODO 没有老师信息或者已存在课程,应该怎么跳转
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        return "redirect:/" + ControllerPath.GET_ALL_COURSE;
+    }
+
+    @Override
+    @RequestMapping("/admin-get-all-courses")
+    public String courseList(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
+                             @RequestParam(name = "size", required = true, defaultValue = "8") int size,
+                             Model model) {
+        ResultDO<List<CourseDO>> resultDO = courseService.getAllCourse(page, size);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        List<CourseDO> courseDOList = resultDO.getModule();
+        PageInfo pageInfo = new PageInfo(courseDOList);
+        model.addAttribute("pageInfo", pageInfo);
+        return TemplatePath.ADMIN_LIST_COURSE;
+    }
+
+    @Override
+    @RequestMapping("/get-course-by-id")
+    public String updateCourse(Long id, Model model) {
+        ResultDO<CourseDO> resultDO = courseService.getCourseById(id);
+        if (!resultDO.isSuccess()){
+            return "redirect/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        CourseDO courseDO = resultDO.getModule();
+        model.addAttribute("course", courseDO);
+        return TemplatePath.ADMIN_UPDATE_COURSE;
+    }
+
+    @Override
+    @RequestMapping("/get-course-info")
+    public String adminGetCourseInfo(Long id, Model model) {
+        ResultDO<CourseDO> resultDO = courseService.getCourseById(id);
+        if (!resultDO.isSuccess()){
+            return "redirect/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        CourseDO courseDO = resultDO.getModule();
+        model.addAttribute("course", courseDO);
+        return TemplatePath.ADMIN_INFO_COURSE;
+    }
+
+    @Override
+    @RequestMapping("/update-course")
+    public String adminUpdateCourse(CourseDO courseDO) {
+        ResultDO<Void> resultDO = courseService.updateCourse(courseDO);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        return "redirect:/" + ControllerPath.GET_ALL_COURSE;
+    }
+
+    @Override
+    @RequestMapping("/delete-course-by-id")
+    public String deleteTeacher(Long id, Model model) {
+        ResultDO<Void> resultDO = courseService.deleteCourseById(id);
+        if (!resultDO.isSuccess()){
+            model.addAttribute("msg", resultDO);
+            return "forward:/" + ControllerPath.GET_ALL_COURSE;
+//            return "redirect:/" + StaticPath.COMMON_ERROR + "?" +resultDO.getMsg();
+        }
+        return "redirect:/" + ControllerPath.GET_ALL_COURSE;
+    }
+
+    @Override
+    @RequestMapping("/student-get-all-courses")
+    public String studentGetAllCourses(@RequestParam(name = "page", required = true, defaultValue = "1") int page,
+                                       @RequestParam(name = "size", required = true, defaultValue = "8") int size,
+                                       Model model) {
+        ResultDO<List<CourseDO>> resultDO = courseService.getAllCourse(page, size);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        List<CourseDO> courseDOList = resultDO.getModule();
+        PageInfo pageInfo = new PageInfo(courseDOList);
+        model.addAttribute("pageInfo", pageInfo);
+        return TemplatePath.STUDENT_LIST_COURSE;
+    }
+
+    @Override
+    @RequestMapping("/student-get-selected-courses")
+    public String studentGetSelectedCourses(Model model, HttpSession httpSession) {
+        StudentDO studentDO = (StudentDO) httpSession.getAttribute("studentAccount");
+        ResultDO<StudentDO> resultDO = studentService.getSelectedCourses(studentDO.getId());
+        StudentDO studentDOWithCourses = resultDO.getModule();
+        model.addAttribute("student", studentDOWithCourses);
+        return TemplatePath.STUDENT_SELECTED_COURSE;
+    }
+
+    @Override
+    @RequestMapping("/student-select-course")
+    public String studentSelectCourse(Long id, HttpSession httpSession, Model model) {
+        StudentDO studentDO = (StudentDO) httpSession.getAttribute("studentAccount");
+        ResultDO<Void> resultDO = studentService.selectCourse(studentDO.getId(), id);
+        if (!resultDO.isSuccess()){
+            model.addAttribute("msg", resultDO);
+            return "forward:/" + ControllerPath.STUDENT_GET_ALL_COURSE_PAGE;
+        }
+        return "redirect:/" + ControllerPath.GET_SELECTED_COURSE;
+    }
+
+    @Override
+    @RequestMapping("/student-delete-course")
+    public String studentDeleteSelectedCourse(Long id, HttpSession httpSession) {
+        StudentDO studentDO = (StudentDO) httpSession.getAttribute("studentAccount");
+        ResultDO<Void> resultDO = studentService.deleteSelectedCourse(studentDO.getId(), id);
+        if (!resultDO.isSuccess()){
+            return "redirect:/" + StaticPath.COMMON_ERROR + "?" + resultDO.getMsg();
+        }
+        return "redirect:/" + ControllerPath.GET_SELECTED_COURSE;
+    }
+
 
 }
